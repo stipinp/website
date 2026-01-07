@@ -1,0 +1,775 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>StipinPixel</title>
+
+<link rel="icon" href="favicon.ico">
+
+<style>
+:root {
+  --bg: #a1dbfd;
+  --fg: #103cff;
+  --muted: #9aa0ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* ===================== */
+/* FONT */
+/* ===================== */
+
+@font-face {
+  font-family: "Meksans";
+  src:
+    url("./fonts/meksans/MEKSans-Regular.woff2") format("woff2"),
+    url("./fonts/meksans/MEKSans-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===================== */
+/* BASE */
+/* ===================== */
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: monospace;
+}
+
+h1, h2, nav {
+  font-family: "Meksans", monospace;
+  letter-spacing: 0.04em;
+}
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+nav {
+  position: fixed;
+  font-size: 1.3rem;
+  top: 0;
+  width: 100%;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+  background: var(--bg);
+}
+
+nav a {
+  margin-left: 16px;
+  opacity: .8;
+}
+
+section {
+  min-height: 100vh;
+  padding: 60px 10vw;
+  position: relative;
+}
+
+h1 {
+  font-size: clamp(2rem, 5vw, 4rem);
+  margin: 0 0 20px 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+p {
+  max-width: 600px;
+  line-height: 1.6;
+  opacity: .9;
+}
+
+/* --- SURI BACKGROUND --- */
+
+#suri-bg {
+  position: absolute;
+  color: #a1dbfd;
+  inset: 0;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.pixel {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.486);
+  pointer-events: none;
+}
+
+/* Estado inicial de todos los links */
+a {
+  color: var(--fg);
+  text-decoration: none; /* Sin subrayado por defecto */
+  transition: all 0.2s ease-in-out;
+  position: relative;
+}
+
+/* Estado cuando pasas el mouse o tocas en móvil */
+a:hover {
+  text-decoration: underline;
+  text-underline-offset: 5px; /* Le da aire para que no toque la letra */
+  text-decoration-thickness: 1px; /* Un poco más grueso para que se note el "pixel" */
+  opacity: 1; /* Asegura que se vea nítido */
+}
+
+/* --- CONTENT LAYER --- */
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- GRIDS --- */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+/* --- WORKS (LIMPIO) --- */
+.item {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  overflow: hidden;
+  background-color: transparent; /* Eliminamos el blanco */
+  opacity: 1; /* Eliminamos la transparencia */
+}
+
+.item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* --- FOOTER --- */
+
+footer {
+  padding: 40px 10vw; /* Más espacio en móvil */
+  margin-bottom: 50px; /* Margen extra al final */
+  position: relative;
+  z-index: 20; /* Valor alto para que siempre esté arriba */
+  
+  text-align: center;
+}
+
+
+
+#nubes-fondo {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: -1; /* Fondo absoluto */
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.nube {
+  animation: flotar 15s ease-in-out infinite alternate;
+  position: absolute;
+  opacity: 0.5; /* Ajusta qué tan "transparentes" son */
+  transition: transform 0.3s ease-out;
+}
+
+@keyframes flotar {
+  from { transform: translateX(10px); }
+  to { transform: translateX(60px); }
+}
+
+
+/* Nuevo diseño para la sección Suri */
+.suri-flex {
+  display: flex;
+  align-items: flex-start; /* Alinea al tope para que coincida con el título */
+  gap: 70px;              /* Espacio entre el texto y la imagen */
+  position: relative;
+  z-index: 2;             /* Asegura que esté por encima del fondo interactivo */
+}
+
+.suri-text {
+  flex: 1.5;              /* El texto toma más espacio */
+}
+
+.suri-visual img {
+  position: absolute; /* Permite moverlo libremente */
+  
+  /* --- CONTROL DE EJES --- */
+  top: 10px;     /* Eje Y: distancia desde arriba del contenedor */
+  right: 10px;   /* Eje X: distancia desde la derecha */
+  
+  /* --- TAMAÑO --- */
+  width: 600px;  /* Controla el ancho exacto del GIF */
+  height: auto;
+  
+  /* --- ESTÉTICA --- */
+  image-rendering: pixelated; 
+  z-index: 5;    /* Asegura que esté por encima de otros textos si se cruzan */
+}
+
+/* Para que en móviles no quede flotando encima del texto de forma rara */
+@media (max-width: 850px) {
+  .suri-visual img {
+    position: static; /* Vuelve a su lugar normal en la columna */
+    width: 100%;
+    margin: 20px auto;
+    display: block;
+  }
+}
+
+/* Layout para la sección Collect */
+.collect-flex {
+  display: flex;
+  align-items: flex-start;
+  gap: 50px;
+  position: relative;
+}
+
+.collect-text {
+  flex: 1.5;
+}
+
+.collect-visual {
+  flex: 1;
+  position: relative;
+}
+
+.collect-visual img {
+  position: absolute;
+  top: 100;
+  right: 70vw; /* Ajusta este valor para moverlo en el eje X */
+  width: 100px; /* Tamaño similar al clay ritual */
+  height: auto;
+  image-rendering: pixelated;
+  z-index: 5;
+  /* Animación opcional para que flote sutilmente */
+  animation: flotar 10s ease-in-out infinite alternate;
+}
+
+/* Ajuste móvil para Collect */
+@media (max-width: 100px) {
+  .collect-flex {
+    flex-direction: column;
+  }
+  .collect-visual img {
+    position: static;
+    width: 100px;
+    margin-top: 20px;
+    margin-right: 20px;
+    margin-left: 20px;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+    
+<nav>
+  <strong><a href="https://x.com/stipinpixel" target="_blank">STIPINPIXEL</a></strong>
+  <div>
+    <a href="#suri">Suri Dimension</a>
+    <a href="#works">Works</a>
+    <a href="#collect">Collect</a>
+    <a href="#archive">Archive</a>
+    <a href="#info">Info</a>
+  </div>
+</nav>
+
+<!-- HOME -->
+<section>
+  <div class="content">
+    <h1>SURI DIMENSION</h1>
+    <p> <strong> A long-term archaeological-digital graphic project.</strong> </p>
+
+<p>
+  <strong>SURI DIMENSION</strong> emerges from over thirteen years of archaeological
+  and visual research into the iconographies of Northwest Argentina (NOA).
+  At its core, it is a design-based study of a territory marked by extraordinary
+  symbolic, archaeological, and geological richness—yet whose cultural traditions
+  remain largely unexplored.
+</p>
+
+<p>
+  My earliest approaches began with clay, mud, and ceramics, later evolving into
+  drawing. Today, this research continues through pixel art, used as a method of
+  digital synthesis to develop cultural and heritage identity within interactive
+  and game-based environments.
+</p>
+
+<div class="suri-visual">
+  <img src="./images/Crying clay ritual.gif" alt="Crying Clay Ritual Animation">
+</div>
+
+  </div>
+</section>
+
+<!-- SURI DIMENSION -->
+<section id="suri">
+  <div id="suri-bg"></div>
+
+  <div class="content">
+    <h2>Suri Dimension</h2>
+    <p>
+      An evolving system of pixel-based environments, artifacts and speculative 
+      structures.The game is only one excavation layer among many.
+    </p>
+
+    <p>
+      Rooted in the iconographies and landscapes of Northwest Argentina, Suri Dimension 
+      reactivates archaeological memory through contemporary digital forms.
+      <strong><a href="https://paragraph.com/@stipinpixel/suri-dimension" target="_blank">+</a></strong> </p> 
+    
+  </div></section>
+
+<!-- WORKS -->
+<section id="works">
+  <h2>Selected Works</h2>
+
+  <div class="grid">
+    <div class="item">
+      <img src="./images/Work 01.gif" alt="Work 01">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 02.gif" alt="Work 02">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 03.gif" alt="Work 03">
+    </div>
+    
+    <div class="item">
+      <img src="./images/Work 04.gif" alt="Work 04">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 05.png" alt="Work 05">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 06.gif" alt="Work 06">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 07.gif" alt="Work 07">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 08.gif" alt="Work 08">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 09.gif" alt="Work 09">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 10.gif" alt="Work 10">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 11.gif" alt="Work 11">
+    </div>
+
+    <div class="item">
+      <img src="./images/Work 12.gif" alt="Work 12">
+    </div>
+
+
+    </div>
+  
+    </div> <div id="nubes-fondo"></div> </section>
+
+
+<!-- ARCHIVE -->
+<section id="archive">
+  <h2>Archive</h2>
+
+  <div class="grid">
+
+<div class="archive-item">
+  <!--<img src="images/rumi-raymi-tokyo.gif" alt="Rumi Raymi Tokyo" />-->
+
+  <h3> DIGITAL SPRINGBOARD Vol.4, Tokyo</h3>
+
+  <p class="meta">
+    <strong> Public screen installation · 2025</strong> 
+  </p>
+
+  <p class="desc">
+    Rumi Raymi. Pixel-based ritual activating Andean stone iconography in urban space.
+    Curation “Media and Environment in Urban Space”.
+  </p>
+
+  <div class="links">
+    <a href="https://www.instagram.com/p/DR3KiQwESNR/?hl=es" target="_blank">Video</a><br>
+    <a href="https://www.instagram.com/p/DSpez5akxDU/?hl=es" target="_blank">Video</a><br>
+    <a href="https://www.instagram.com/p/DSVoiB8jqcC/?hl=es&img_index=1" target="_blank">Photo</a><br>
+  </div>
+</div>
+
+<div class="archive-item">
+  <h3>Activated Gold</h3>
+
+  <p class="meta">
+    <strong> GIF Gallery · Objkt · 2025</strong> 
+  </p>
+
+  <p class="desc">
+    Three animated works reactivating pre-Hispanic gold masks from Northwestern
+    Argentina as speculative digital artifacts within Suri Dimension.
+  </p>
+
+  <div class="links">
+    <a href="https://objkt.com/tokens/KT1JUFfsjkvkz9ndLrntbYrytw2RSHKSkcMw/36?ref=tz2TZRhAzpp4PtnV4WxAJiMMJwA9SyLqsvWu" target="_blank">Yukk Gold mask from Quixca Utula</a><br>
+    <a href="https://objkt.com/tokens/KT1JUFfsjkvkz9ndLrntbYrytw2RSHKSkcMw/35?ref=tz2TZRhAzpp4PtnV4WxAJiMMJwA9SyLqsvWu" target="_blank">Yukk Gold Pendants</a><br>
+    <a href="https://objkt.com/tokens/KT1JUFfsjkvkz9ndLrntbYrytw2RSHKSkcMw/34?ref=tz2TZRhAzpp4PtnV4WxAJiMMJwA9SyLqsvWu" target="_blank">Yukk Gold Diadem</a><br>
+    <a href="https://www.instagram.com/p/DQkPAaHAY8D/?hl=es&img_index=1" target="_blank">Research</a><br>
+  </div>
+</div>
+
+<div class="archive-item highlight">
+  <h3>Ritual de arcilla para llorar</h3>
+
+  <p class="meta">
+    <strong> Award · Research · Game · 2025</strong> 
+  </p>
+
+  <p class="desc">
+    Pixel-based videogame exploring environmental care and Andean cultural
+    heritage. Awarded First Prize for Innovation at the NOA Regional Visual Arts
+    Award (Jujuy).
+  </p>
+  <div class="links">
+    <a href="https://www.instagram.com/p/DNhLvD4Of7Q/?hl=es" target="_blank">Instagram</a>
+  </div>
+
+</div>
+
+
+
+    <div class="archive-item">
+  <h3>BYOD² DigShibuya, Tokyo</h3>
+
+  <p class="meta">
+    <strong> Exhibition · Open format · 2025</strong> 
+  </p>
+
+  <p class="desc">
+    Four pixel-based ritual animations presented within a data-driven exhibition
+    exploring the relationship between digital works and physical display.
+  </p>
+
+  <div class="links">
+    <a href="https://www.instagram.com/p/DGRrSNTur4_/?hl=es" target="_blank">DigShibuya</a>
+  </div>
+</div>
+   
+<div class="archive-item">
+  <h3>Maskay Gallery</h3>
+
+  <p class="meta">
+    <strong> Curated by Stipinpixel</strong> 
+  </p>
+
+  <p>
+    Digital art gallery rooted in the Northwest Argentina, emerging from the
+    Yungas and mountain territories. Connecting local practices with global digital
+    and Web3 ecosystems.
+  </p>
+
+  <a href="https://maskay.gallery/" target="_blank" class="archive-link">
+    maskay.gallery
+  </a>
+</div>
+
+<div class="archive-item"> 
+  <!--<img src="images/nox-tokyo.jpg" alt="Nox Gallery Tokyo" /> -->
+
+  <h3>Nox Gallery, Tokyo</h3>
+
+  <p class="meta">
+    <strong> Mini videogame installation · 2024</strong> 
+  </p>
+
+  <p class="desc">
+    Playful interactive prototype presented during Kismet Casa exhibition.
+  </p>
+
+  <div class="links">
+    <!-- <a href="https://test-of-yukk-movements.netlify.app/" target="_blank">Play</a> -->
+    <a href="https://www.instagram.com/p/C-Vj5zKS5L1/?hl=es" target="_blank">Instagram</a>
+  </div>
+</div>
+  
+<div class="archive-item">
+  <h3>GIF Gallery IRL — Switzerland</h3>
+  <p class="meta">
+    <strong> Animation Exhibitions · 2023-2024 </strong><br>
+  </p>
+  <p>
+    Selection of pixel-based GIF animations exhibited in museum, gallery and cinema
+    contexts in Switzerland, including institutional shows connected to art history
+    and digital heritage.
+  </p>
+      <a href="https://www.gif-gallery.com/hommage-a-paul-klee" target="_blank">
+        Hommage à Paul Klee
+      </a><br>
+    
+      <a href="https://www.instagram.com/p/CvvouCFO1rY/?hl=es&img_index=1" target="_blank">
+        Scherenschnitt 3.0 
+      </a><br>
+    
+      <a href="https://www.instagram.com/p/CxY1Q0UugIf/?hl=es&img_index=1" target="_blank">
+        Niesen Soft
+      </a><br>
+
+</div>
+
+<div class="archive-item"> 
+
+  <h3>TEZ ART MTL, Canada</h3>
+
+  <p class="meta">
+    <strong> Installation · 2023</strong> 
+  </p>
+
+  <p class="desc">
+    8 animated pieces selected by Sabato were exhibited with his curatorial is themed on dislocation/relocation and how artists use materialities to relocate themselves in this chaotic world.
+    organized by Strano.
+  </p>
+
+  <div class="links">
+    <a href="https://www.instagram.com/p/CxdwVmXOmii/?hl=es" target="_blank">Instagram</a>
+  </div>
+</div>
+
+  </div>
+</section>
+<!-- COLLECT -->
+
+<section id="collect">
+  <h2>Collect</h2>
+  <p>
+    Selected works from Suri Dimension are available on curated onchain platforms.
+  </p>
+
+  <div class="grid">
+    <div class="card markets">
+      <h3>Ethereum Generative</h3>
+      <a href="https://www.fxhash.xyz/u/stipinpixel"target="_blank" rel="noopener noreferrer">FXhash</a><br>
+    </div>
+    <div class="card markets">
+      <h3>Ethereum 1of1</h3>
+      <a href="https://opensea.io/collection/creatures-of-suri-dimension"target="_blank" rel="noopener noreferrer">PFP Opensea</a><br>
+    </div>
+    <div class="card markets">
+      <h3>Ethereum Editions</h3>
+      <a href="https://foundation.app/@stipinpixel?tab=created"target="_blank" rel="noopener noreferrer">Foundation</a><br>
+      <a href="https://opensea.io/collection/wayra-turu"target="_blank" rel="noopener noreferrer">Opensea</a><br>
+      <a href="https://vibechain.com/market/wayra-wasi-pack?ref=1PNR6XSDV0OR"target="_blank" rel="noopener noreferrer">Vibechain</a><br>
+    </div>
+    <div class="card markets">
+      <h3>Tezos</h3>
+      <a href="https://objkt.com/@stipinpixel" target="_blank" rel="noopener noreferrer">Objkt</a><br>
+    </div>
+    
+ 
+
+<p style="margin-top:32px; font-size:13px;">
+  Other platforms: 
+  <a href="https://www.linkedin.com/in/pablo-rivero-stipinpixel/" target="_blank" rel="noopener noreferrer">Linkedin</a>,
+  <a href="https://zora.co/@stipinpixel" target="_blank" rel="noopener noreferrer">Zora</a>,
+  <a href="https://farcaster.xyz/stipinpixel" target="_blank" rel="noopener noreferrer">Farcaster</a>,
+  <a href="https://manifold.gallery/stipinpixel" target="_blank" rel="noopener noreferrer">Manifold</a>, 
+  <a href="https://rodeo.club/@stipinpixel/posts" target="_blank" rel="noopener noreferrer">Rodeo</a>, 
+  <a href="https://www.mallow.art/u/stipinpixel" target="_blank" rel="noopener noreferrer">Mallow</a>, 
+  <a href="https://exchange.art/stipinpixel/nfts" target="_blank" rel="noopener noreferrer">Exchange Art</a>.
+</p>
+
+<div class="grid">
+      </div>
+
+    <div class="collect-visual">
+       <img src="./images/Yukk.gif" alt="Collect Artwork">
+    </div>
+  </div></section>
+
+<!-- INFO -->
+<section id="info">
+  <h2>Info</h2>
+
+<p>
+  <strong> StipinPixel </strong>  is a visual artist working with pixel systems, digital archaeology,
+  speculative interfaces and game-based environments.
+</p>
+
+<p>
+  Designer, artist, curator, educator and game developer,
+  working across physical and digital contexts.
+</p>
+
+<p>
+  His practice connects local heritage and global digital cultures through
+  pixel art, games, generative systems and collaborative projects focused on
+  cultural memory and experimental formats.
+</p>
+
+<div class="info">
+  <a href="#">
+    <img src="./images/stipinpixel.jpg" alt="stipinpixel" style="cursor: pointer;">
+  </a>
+</div>
+
+</section>
+
+<footer>
+  <h3><strong>© Pablo Rivero AKA StipinPixel</strong><h3>
+</footer>
+
+<script>
+const trazo = [
+            { x: 12, y: 2 }, { x: 13, y: 2 }, { x: 14, y: 2 }, { x: 15, y: 2 },
+            { x: 16, y: 2 }, { x: 17, y: 2 }, { x: 18, y: 2 }, { x: 11, y: 3 },
+            { x: 19, y: 3 }, { x: 10, y: 4 }, { x: 13, y: 4 }, { x: 14, y: 4 },
+            { x: 15, y: 4 }, { x: 16, y: 4 }, { x: 17, y: 4 }, { x: 20, y: 4 },
+            { x: 9, y: 5 }, { x: 11, y: 5 }, { x: 12, y: 5 }, { x: 15, y: 5 },
+            { x: 18, y: 5 }, { x: 19, y: 5 }, { x: 21, y: 5 }, { x: 8, y: 6 },
+            { x: 10, y: 6 }, { x: 15, y: 6 }, { x: 20, y: 6 }, { x: 22, y: 6 },
+            { x: 8, y: 7 }, { x: 10, y: 7 }, { x: 13, y: 7 }, { x: 15, y: 7 },
+            { x: 17, y: 7 }, { x: 20, y: 7 }, { x: 22, y: 7 }, { x: 8, y: 8 },
+            { x: 11, y: 8 }, { x: 15, y: 8 }, { x: 19, y: 8 }, { x: 22, y: 8 },
+            { x: 8, y: 9 }, { x: 12, y: 9 }, { x: 18, y: 9 }, { x: 22, y: 9 },
+            { x: 8, y: 10 }, { x: 12, y: 10 }, { x: 18, y: 10 }, { x: 22, y: 10 },
+            { x: 9, y: 11 }, { x: 11, y: 11 }, { x: 19, y: 11 }, { x: 21, y: 11 },
+            { x: 10, y: 12 }, { x: 15, y: 12 }, { x: 20, y: 12 }, { x: 11, y: 13 },
+            { x: 14, y: 13 }, { x: 16, y: 13 }, { x: 19, y: 13 }, { x: 11, y: 14 },
+            { x: 13, y: 14 }, { x: 15, y: 14 }, { x: 17, y: 14 }, { x: 19, y: 14 },
+            { x: 12, y: 15 }, { x: 18, y: 15 }, { x: 13, y: 16 }, { x: 14, y: 16 },
+            { x: 15, y: 16 }, { x: 16, y: 16 }, { x: 17, y: 16 }, { x: 15, y: 17 },
+            { x: 21, y: 17 }, { x: 8, y: 18 }, { x: 9, y: 18 }, { x: 10, y: 18 },
+            { x: 11, y: 18 }, { x: 12, y: 18 }, { x: 13, y: 18 }, { x: 14, y: 18 },
+            { x: 15, y: 18 }, { x: 16, y: 18 }, { x: 17, y: 18 }, { x: 18, y: 18 },
+            { x: 19, y: 18 }, { x: 20, y: 18 }, { x: 21, y: 18 }, { x: 22, y: 18 },
+            { x: 13, y: 19 }, { x: 14, y: 19 }, { x: 15, y: 19 }, { x: 16, y: 19 },
+            { x: 17, y: 19 }, { x: 21, y: 19 }, { x: 13, y: 20 }, { x: 14, y: 20 },
+            { x: 15, y: 20 }, { x: 16, y: 20 }, { x: 17, y: 20 }, { x: 13, y: 21 },
+            { x: 14, y: 21 }, { x: 15, y: 21 }, { x: 16, y: 21 }, { x: 17, y: 21 },
+            { x: 13, y: 22 }, { x: 14, y: 22 }, { x: 15, y: 22 }, { x: 16, y: 22 },
+            { x: 17, y: 22 }, { x: 13, y: 23 }, { x: 14, y: 23 }, { x: 15, y: 23 },
+            { x: 16, y: 23 }, { x: 17, y: 23 }, { x: 13, y: 24 }, { x: 14, y: 24 },
+            { x: 15, y: 24 }, { x: 16, y: 24 }, { x: 17, y: 24 }, { x: 13, y: 25 },
+            { x: 17, y: 25 }, { x: 13, y: 26 }, { x: 17, y: 26 }, { x: 13, y: 27 },
+            { x: 17, y: 27 }, { x: 13, y: 28 }, { x: 17, y: 28 }
+        ];
+
+const container = document.getElementById("suri-bg");
+const scale = 10;
+
+function drawTrazo(x, y) {
+  const offsetX = x - 120;
+  const offsetY = y - 120;
+
+  trazo.forEach(p => {
+    const d = document.createElement("div");
+    d.className = "pixel";
+    d.style.left = offsetX + p.x * scale + "px";
+    d.style.top = offsetY + p.y * scale + "px";
+    d.style.opacity = 1;
+    d.style.transition = "opacity 1.5s ease";
+    container.appendChild(d);
+
+    setTimeout(() => d.style.opacity = 0, 3000);
+    setTimeout(() => d.remove(), 4500);
+  });
+}
+
+
+/* --- EVENTOS --- */
+
+// Hover (desktop)
+container.addEventListener("mousemove", e => {
+  if (Math.random() > 0.8) {
+    drawTrazo(e.clientX, e.clientY);
+  }
+});
+
+// Click (desktop + mobile)
+container.addEventListener("click", e => {
+  drawTrazo(e.clientX, e.clientY);
+});
+
+
+// nubes
+
+function crearNubes() {
+  const contenedor = document.getElementById("nubes-fondo");
+  const misNubes = ["nube_1.png", "nube_2.png", "nube_3.png", "nube_4.png", "nube_5.png"]; 
+  const cantidad = 13; 
+
+  for (let i = 0; i < cantidad; i++) {
+    const img = document.createElement("img");
+    
+    const randomImg = misNubes[Math.floor(Math.random() * misNubes.length)];
+    img.src = "./images/" + randomImg;
+    img.className = "nube";
+
+    // --- AJUSTE DE EJES ---
+    // Eje X: 0 a 90 (para que no se corten en el borde derecho)
+    const posX = Math.random() * 90; 
+    
+    // Eje Y: Si quieres que estén arriba, usa (Math.random() * 40)
+    // Si quieres que estén en TODA la pantalla, usa (Math.random() * 100)
+    const posY = Math.random() * 100; 
+
+    // Tamaño: entre 150px y 350px
+    const size = Math.random() * 200 + 150; 
+    
+    img.style.left = posX + "vw";
+    img.style.top = posY + "vh";
+    img.style.width = size + "px";
+    
+    // Inversión aleatoria (para que no parezcan siempre el mismo PNG)
+    if (Math.random() > 0.5) {
+      img.style.transform = "scaleX(-1)";
+    }
+
+    contenedor.appendChild(img);
+  }
+}
+
+window.addEventListener("load", crearNubes);
+
+</script>
+
+<script>
+  if (window.location.hash) {
+    window.scrollTo(0, 0);
+  }
+</script>
+
+</body>
+</html>

@@ -1,0 +1,134 @@
+
+:root {
+  --bg: #0a0f2c;
+  --fg: #eaeaff;
+  --muted: #9aa0ff;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+
+/* ===================== */
+/* FONT */
+/* ===================== */
+
+@font-face {
+  font-family: "Meksans";
+  src:
+    url("../fonts/meksans/MEKSans-Regular.woff2") format("woff2"),
+    url("../fonts/meksans/MEKSans-Regular.woff") format("woff");
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
+/* ===================== */
+/* BASE */
+/* ===================== */
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: monospace;
+}
+
+h1, h2, nav {
+  font-family: "Meksans", monospace;
+  letter-spacing: 0.05em;
+}
+
+a {
+  color: var(--fg);
+  text-decoration: none;
+}
+
+
+nav {
+  position: fixed;
+  top: 0;
+  width: 100%;
+  padding: 16px 24px;
+  display: flex;
+  justify-content: space-between;
+  z-index: 10;
+  background: linear-gradient(to bottom, rgba(10,15,44,.9), rgba(10,15,44,0));
+}
+
+nav a {
+  margin-left: 16px;
+  opacity: .8;
+}
+
+section {
+  min-height: 100vh;
+  padding: 120px 10vw;
+  position: relative;
+}
+
+h1 {
+  font-size: clamp(2rem, 6vw, 4rem);
+  margin: 0 0 20px 0;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin-bottom: 20px;
+}
+
+p {
+  max-width: 600px;
+  line-height: 1.6;
+  opacity: .9;
+}
+
+/* --- SURI BACKGROUND --- */
+
+#suri-bg {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  cursor: crosshair;
+}
+
+.pixel {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: rgba(243, 239, 239, 0.25);
+  pointer-events: none;
+}
+
+
+/* --- CONTENT LAYER --- */
+
+.content {
+  position: relative;
+  z-index: 1;
+}
+
+/* --- GRIDS --- */
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 24px;
+}
+
+.item {
+  aspect-ratio: 1 / 1;
+  background: rgba(255,255,255,.05);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: .7;
+}
+
+/* --- FOOTER --- */
+
+footer {
+  padding: 80px 10vw;
+  opacity: .6;
+}
