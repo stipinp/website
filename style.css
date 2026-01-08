@@ -69,9 +69,11 @@ section {
   padding: 80px max(6vw, 32px);
 }
 
-section:first-of-type {
-  min-height: 100vh;
+section {
+  min-height: min(100vh, 900px);
+  padding: 80px max(6vw, 32px);
 }
+
 
 
 h1 {
@@ -272,4 +274,5 @@ footer {
     margin-left: 20px;
   }
 }
+
 
