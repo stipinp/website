@@ -1,6 +1,7 @@
+
 :root {
-  --bg: #a1dbfd;
-  --fg: #103cff;
+  --bg: #585df5;
+  --fg: #060d45;
   --muted: #9aa0ff;
 }
 
@@ -32,11 +33,13 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: monospace;
+  text-align: center;
 }
 
-h1, h2, nav {
+h1, h2, h3, nav {
   font-family: "Meksans", monospace;
   letter-spacing: 0.04em;
+  text-align: center;
 }
 
 a {
@@ -75,22 +78,32 @@ section:first-of-type {
   min-height: 100vh;
 }
 
-
 h1 {
   font-size: clamp(2rem, 5vw, 4rem);
-  margin: 0 0 20px 0;
+  margin: 0 0 10px 0;
+  text-align: center;
 }
 
 h2 {
-  font-size: 1.5rem;
+  font-size: 1rem;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+h3 {
+  font-size: 2rem;
   margin-bottom: 20px;
+  text-align: center;
 }
 
 p {
   max-width: 600px;
+  font-size: 1rem;
+  margin: 0 auto;
   line-height: 1.6;
   opacity: .9;
 }
+
 
 /* --- SURI BACKGROUND --- */
 
@@ -156,18 +169,6 @@ a:hover {
   display: block;
 }
 
-/* --- FOOTER --- */
-
-footer {
-  padding: 40px 10vw; /* Más espacio en móvil */
-  margin-bottom: 50px; /* Margen extra al final */
-  position: relative;
-  z-index: 20; /* Valor alto para que siempre esté arriba */
-  
-  text-align: center;
-}
-
-
 
 #nubes-fondo {
   position: fixed;
@@ -207,19 +208,15 @@ footer {
 }
 
 .suri-visual img {
-  position: absolute; /* Permite moverlo libremente */
-  
-  /* --- CONTROL DE EJES --- */
-  top: 10px;     /* Eje Y: distancia desde arriba del contenedor */
-  right: 10px;   /* Eje X: distancia desde la derecha */
-  
-  /* --- TAMAÑO --- */
-  width: 600px;  /* Controla el ancho exacto del GIF */
-  height: auto;
-  
-  /* --- ESTÉTICA --- */
-  image-rendering: pixelated; 
-  z-index: 5;    /* Asegura que esté por encima de otros textos si se cruzan */
+  display: block;          /* Permite centrar con margin */
+  margin: 40px auto;       /* Espacio arriba y abajo */
+  width: 420px;            /* Tamaño controlado */
+  max-width: 90vw;         /* Responsive */
+  image-rendering: pixelated;
+
+  /* Opcional estética */
+  border-radius: 8px;      /* Suave */
+
 }
 
 /* Para que en móviles no quede flotando encima del texto de forma rara */
@@ -275,7 +272,64 @@ footer {
   }
 }
 
+.image {
+  display: flex;
+  justify-content: center;
+  margin: 40px 0 40px;   /* aire arriba y abajo */
+}
+
+.image img {
+  width: 800px;          /* tamaño ideal desktop */
+  max-width: 90vw;       /* responsive */
+  height: auto;
+
+  image-rendering: pixelated;
+
+  /* estética */
+  border-radius: 12px;
+  
+}
+
+/* INFO GRID */
+.info-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+
+  max-width: 1000px;   /* ancho total del bloque */
+  margin: 60px auto;   /* centra el conjunto */
+  padding: 0 20px;
+}
+
+/* TARJETA */
+.info-card {
+  text-align: center;
+}
+
+/* IMÁGENES */
+.info-card img {
+  width: 220px;
+  height: auto;
+  margin-bottom: 20px;
+
+  image-rendering: pixelated;
+}
 
 
+/* TEXTO */
+.info-card p {
+  max-width: 420px;
+  margin: 0 auto 14px;
+}
 
+.site-footer {
+  font-size: 0.9rem;
+  opacity: 0.7;
+  padding: 20px 0;
+  text-align: center;
+}
 
+#info {
+  min-height: auto;
+  padding-bottom: 20px;
+}
