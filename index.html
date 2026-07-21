@@ -1,557 +1,295 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <meta name="robots" content="noindex, nofollow, noai, noimageai">
+<title>Stipinpixel — Pablo Rivero</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,400&display=swap" rel="stylesheet">
+<style>
 
-<title>Stipinpixel</title>
+  :root{
+    --bg: #14110d;
+    --bg-alt: #1c1710;
+    --ink: #e9e1d2;
+    --ink-dim: #a79c89;
+    --accent: #4a8b83;
+    --accent-warm: #a9744a;
+    --line: #3a3327;
+    --font-display: 'Press Start 2P', monospace;
+    --font-body: 'Newsreader', serif;
+  }
 
-<link rel="icon" href="favicon.ico">
+  *{ box-sizing: border-box; }
+  html{ scroll-behavior: smooth; }
 
-<link rel="stylesheet" href="style.css">
+  body{
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-body);
+    -webkit-font-smoothing: antialiased;
+  }
 
+  .mark{
+    padding: 56px 24px 32px;
+    text-align: center;
+  }
+
+  .mark h1{
+    font-family: var(--font-display);
+    font-size: clamp(14px, 2.4vw, 20px);
+    letter-spacing: 0.06em;
+    color: var(--accent);
+    margin: 0 0 10px;
+    font-weight: 400;
+  }
+
+  .mark p{
+    margin: 0;
+    color: var(--ink-dim);
+    font-size: 15px;
+    letter-spacing: 0.02em;
+  }
+
+  .scroll{
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 0 16px 24px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .block{
+    opacity: 0;
+    transform: translateY(18px);
+    transition: opacity .7s ease, transform .7s ease;
+  }
+  .block.in{
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  /* aspect-ratio is set inline per block/tile to match each asset exactly */
+
+  .wide{
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--line);
+  }
+
+  .wide img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+  }
+
+  .wide.portrait{
+    max-width: 420px;
+    margin: 0 auto;
+  }
+
+  .grid{
+    display: grid;
+    gap: 16px;
+  }
+
+  .grid-4{ grid-template-columns: repeat(4, 1fr); }
+  .grid-3{ grid-template-columns: repeat(3, 1fr); }
+
+  .tile{
+    overflow: hidden;
+    border: 1px solid var(--line);
+    background: var(--bg-alt);
+  }
+
+  .tile img{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+    image-rendering: pixelated;
+    transition: transform .5s ease;
+  }
+
+  .tile:hover img{
+    transform: scale(1.05);
+  }
+
+  /* delete each .placeholder div once the real <img> is uncommented */
+  .placeholder{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: var(--ink-dim);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding: 12px;
+    line-height: 1.5;
+    width: 100%;
+    height: 100%;
+  }
+
+  @media (max-width: 720px){
+    .grid-4{ grid-template-columns: repeat(2, 1fr); }
+    .grid-3{ grid-template-columns: repeat(1, 1fr); }
+    .wide.portrait{ max-width: 260px; }
+  }
+
+  .bio{
+    max-width: 640px;
+    margin: 72px auto 0;
+    padding: 0 24px 96px;
+    text-align: center;
+  }
+
+  .bio h2{
+    font-family: var(--font-display);
+    font-size: 12px;
+    color: var(--accent-warm);
+    letter-spacing: 0.06em;
+    font-weight: 400;
+    margin: 0 0 20px;
+  }
+
+  .bio p{
+    font-size: 17px;
+    line-height: 1.65;
+    color: var(--ink);
+    font-weight: 300;
+    margin: 0 0 28px;
+  }
+
+  .socials{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px 22px;
+    font-size: 14px;
+  }
+
+  .socials a{
+    color: var(--ink-dim);
+    text-decoration: none;
+    border-bottom: 1px solid transparent;
+    padding-bottom: 2px;
+    transition: color .25s ease, border-color .25s ease;
+  }
+
+  .socials a:hover{
+    color: var(--accent);
+    border-color: var(--accent);
+  }
+
+  footer{
+    text-align: center;
+    color: var(--line);
+    font-size: 11px;
+    letter-spacing: 0.04em;
+    padding-bottom: 40px;
+  }
+
+</style>
 </head>
-
 <body>
 
-    
-<nav>
-  <strong><a href="https://x.com/stipinpixel" target="_blank">STIPINPIXEL</a></strong>
-  <div>
-    <a href="#suri">Suri Dimension</a>
-    <a href="#works">Works</a>
-    <a href="#collect">Collect</a>
-    <a href="#archive">Archive</a>
-    <a href="#info">Info</a>
+  <div class="mark">
+    <h1>STIPINPIXEL</h1>
+    <p>Pablo Rivero — pixel art &amp; environments</p>
   </div>
-</nav>
 
-<!-- HOME -->
-<section>
-  <div class="content">
-    <h1>SURI DIMENSION</h1>
-    <p> <strong> A long-term archaeological-digital graphic project.</strong> </p>
+  <div class="scroll">
 
-<p>
-  <strong>SURI DIMENSION</strong> emerges from over thirteen years of archaeological
-  and visual research into the iconographies of Northwest Argentina (NOA).
-  At its core, it is a design-based study of a territory marked by extraordinary
-  symbolic, archaeological, and geological richness—yet whose cultural traditions
-  remain largely unexplored.
-</p>
+    <!-- 01 · w_01.gif · 960x640 -->
+    <div class="block wide" style="aspect-ratio: 960/640;">
+      <div class="placeholder">images/w_01.gif · 960×640</div>
+      <!-- <img src="images/w_01.gif" alt=""> -->
+    </div>
 
-<p>
-  My earliest approaches began with clay, mud, and ceramics, later evolving into
-  drawing. Today, this research continues through pixel art, used as a method of
-  digital synthesis to develop cultural and heritage identity within interactive
-  and game-based environments.
-</p>
+    <!-- 02 · w_02.gif · 1920x1080 -->
+    <div class="block wide" style="aspect-ratio: 1920/1080;">
+      <div class="placeholder">images/w_02.gif · 1920×1080</div>
+    </div>
 
-<a href="https://stipinp.com/suri-dimension" target="_blank"><h1>PARTY IN SURI DIMENSION ON FXHASH</h1></a></strong> </p> 
+    <!-- 03 · grid of 4 · w_03–w_06.gif · 1920x1920 -->
+    <div class="block grid grid-4">
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_03.gif</div></div>
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_04.gif</div></div>
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_05.gif</div></div>
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_06.gif</div></div>
+    </div>
 
-<div class="suri-visual">
-  <img src="./images/Crying clay ritual.gif" alt="Crying Clay Ritual Animation">
-</div>
+    <!-- 04 · w_07.jpg · 1919x467 -->
+    <div class="block wide" style="aspect-ratio: 1919/467;">
+      <div class="placeholder">images/w_07.jpg · 1919×467</div>
+    </div>
+
+    <!-- 05 · grid of 3 · w_08–w_10.gif · 1920x1920 (only 3 files given — adjust to 4 if needed) -->
+    <div class="block grid grid-3">
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_08.gif</div></div>
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_09.gif</div></div>
+      <div class="tile" style="aspect-ratio:1/1;"><div class="placeholder">images/w_10.gif</div></div>
+    </div>
+
+    <!-- 06 · w_11.gif · 2000x1000 -->
+    <div class="block wide" style="aspect-ratio: 2000/1000;">
+      <div class="placeholder">images/w_11.gif · 2000×1000</div>
+    </div>
+
+    <!-- 07 · grid of 3 · w_12–w_14.jpg · 2048x1538 -->
+    <div class="block grid grid-3">
+      <div class="tile" style="aspect-ratio:2048/1538;"><div class="placeholder">images/w_12.jpg</div></div>
+      <div class="tile" style="aspect-ratio:2048/1538;"><div class="placeholder">images/w_13.jpg</div></div>
+      <div class="tile" style="aspect-ratio:2048/1538;"><div class="placeholder">images/w_14.jpg</div></div>
+    </div>
+
+    <!-- 08 · w_15.gif · 2000x1000 -->
+    <div class="block wide" style="aspect-ratio: 2000/1000;">
+      <div class="placeholder">images/w_15.gif · 2000×1000</div>
+    </div>
+
+    <!-- 09 · w_16.gif · 1080x1920 (portrait, width-constrained) -->
+    <div class="block wide portrait" style="aspect-ratio: 1080/1920;">
+      <div class="placeholder">images/w_16.gif · 1080×1920</div>
+    </div>
+
+    <!-- 10 · w_17.gif · 1080x1920 (portrait, width-constrained) -->
+    <div class="block wide portrait" style="aspect-ratio: 1080/1920;">
+      <div class="placeholder">images/w_17.gif · 1080×1920</div>
+    </div>
 
   </div>
-</section>
 
-<!-- SURI DIMENSION -->
-<section id="suri">
-  <div id="suri-bg"></div>
-
-  <div class="content">
-    <h2>Suri Dimension</h2>
+  <div class="bio block">
+    <h2>INFO</h2>
     <p>
-      An evolving system of pixel-based environments, artifacts and speculative 
-      structures.The game is only one excavation layer among many.
+      Pablo Rivero (Stipinpixel) is a pixel artist ..
     </p>
-
-    <p>
-      Rooted in the iconographies and landscapes of Northwest Argentina, Suri Dimension 
-      reactivates archaeological memory through contemporary digital forms.
-      <strong><a href="https://paragraph.com/@stipinpixel/suri-dimension" target="_blank">+</a></strong> </p> 
-    
-  </div></section>
-
-<!-- WORKS -->
-<section id="works">
-  <h2>Selected Works</h2>
-
-  <div class="grid">
-    <div class="item">
-      <img src="./images/Work 01.png" alt="Work 01">
+    <div class="socials">
+      <a href="https://x.com/stipinpixel" target="_blank">X</a>
+      <a href="https://www.instagram.com/stipinp" target="_blank">Instagram</a>
+      <a href="https://objkt.com/@stipinpixel" target="_blank">Objkt</a>
+      <a href="https://www.fxhash.xyz/u/stipinpixel" target="_blank">fxhash</a>
+      <a href="https://maskay.gallery/" target="_blank">Maskay Gallery</a>
+      <a href="https://www.linkedin.com/in/pablo-rivero-stipinpixel/" target="_blank">LinkedIn</a>
     </div>
-
-    <div class="item">
-      <img src="./images/Work 02.gif" alt="Work 02">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 03.gif" alt="Work 03">
-    </div>
-    
-    <div class="item">
-      <img src="./images/Work 04.gif" alt="Work 04">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 05.gif" alt="Work 05">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 06.png" alt="Work 06">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 07.png" alt="Work 07">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 08.png" alt="Work 08">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 09.gif" alt="Work 09">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 10.png" alt="Work 10">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 11.png" alt="Work 11">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 12.png" alt="Work 12">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 13.png" alt="Work 13">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 14.png" alt="Work 14">
-    </div>
-      
-    <div class="item">
-      <img src="./images/Work 15.png" alt="Work 15">
-    </div>
-      
-    <div class="item">
-      <img src="./images/Work 16.png" alt="Work 16">
-    </div>
-      
-    <div class="item">
-      <img src="./images/Work 17.png" alt="Work 17">
-    </div>
-      
-   <div class="item">
-      <img src="./images/Work 18.png" alt="Work 18">
-    </div>
-      
-   <div class="item">
-      <img src="./images/Work 19.gif" alt="Work 19">
-    </div>
-
-   <div class="item">
-      <img src="./images/Work 20.gif" alt="Work 20">
-    </div>   
-      
-   <div class="item">
-      <img src="./images/Work 21.gif" alt="Work 21">
-    </div>
-      
-    <div class="item">
-      <img src="./images/Work 22.gif" alt="Work 22">
-    </div>
-      
-    <div class="item">
-      <img src="./images/Work 23.gif" alt="Work 23">
-    </div>
-
-    <div class="item">
-      <img src="./images/Work 24.gif" alt="Work 24">
-    </div>
-    </div>
-  
-    </div> <div id="nubes-fondo"></div> </section>
-
-
-<!-- ARCHIVE -->
-<section id="archive">
-  <h2>Archive</h2>
-
-  <div class="grid">
-
-<div class="archive-item">
-  <!--<img src="images/rumi-raymi-tokyo.gif" alt="Rumi Raymi Tokyo" />-->
-
-  <h3> DIGITAL SPRINGBOARD Vol.4, Tokyo</h3>
-
-  <p class="meta">
-    <strong> Public screen installation · 2025</strong> 
-  </p>
-
-  <p class="desc">
-    Rumi Raymi. Pixel-based ritual activating Andean stone iconography in urban space.
-    Curation “Media and Environment in Urban Space”.
-  </p>
-
-  <div class="links">
-    <a href="https://www.instagram.com/p/DR3KiQwESNR/?hl=es" target="_blank">Video</a><br>
-    <a href="https://www.instagram.com/p/DSpez5akxDU/?hl=es" target="_blank">Video</a><br>
-    <a href="https://www.instagram.com/p/DSVoiB8jqcC/?hl=es&img_index=1" target="_blank">Photo</a><br>
-  </div>
-</div>
-
-<div class="archive-item">
-  <h3>Activated Gold</h3>
-
-  <p class="meta">
-    <strong> GIF Gallery · Objkt · 2025</strong> 
-  </p>
-
-  <p class="desc">
-    Three animated works reactivating pre-Hispanic gold masks from Northwestern
-    Argentina as speculative digital artifacts within Suri Dimension.
-  </p>
-
-  <div class="links">
-    <a href="https://objkt.com/tokens/KT1JUFfsjkvkz9ndLrntbYrytw2RSHKSkcMw/36?ref=tz2TZRhAzpp4PtnV4WxAJiMMJwA9SyLqsvWu" target="_blank">Yukk Gold mask from Quixca Utula</a><br>
-    <a href="https://objkt.com/tokens/KT1JUFfsjkvkz9ndLrntbYrytw2RSHKSkcMw/35?ref=tz2TZRhAzpp4PtnV4WxAJiMMJwA9SyLqsvWu" target="_blank">Yukk Gold Pendants</a><br>
-    <a href="https://objkt.com/tokens/KT1JUFfsjkvkz9ndLrntbYrytw2RSHKSkcMw/34?ref=tz2TZRhAzpp4PtnV4WxAJiMMJwA9SyLqsvWu" target="_blank">Yukk Gold Diadem</a><br>
-    <a href="https://www.instagram.com/p/DQkPAaHAY8D/?hl=es&img_index=1" target="_blank">Research</a><br>
-  </div>
-</div>
-
-<div class="archive-item highlight">
-  <h3>Ritual de arcilla para llorar</h3>
-
-  <p class="meta">
-    <strong> Award · Research · Game · 2025</strong> 
-  </p>
-
-  <p class="desc">
-    Pixel-based videogame exploring environmental care and Andean cultural
-    heritage. Awarded First Prize for Innovation at the NOA Regional Visual Arts
-    Award (Jujuy).
-  </p>
-  <div class="links">
-    <a href="https://www.instagram.com/p/DNhLvD4Of7Q/?hl=es" target="_blank">Instagram</a>
   </div>
 
-</div>
-
-
-
-    <div class="archive-item">
-  <h3>BYOD² DigShibuya, Tokyo</h3>
-
-  <p class="meta">
-    <strong> Exhibition · Open format · 2025</strong> 
-  </p>
-
-  <p class="desc">
-    Four pixel-based ritual animations presented within a data-driven exhibition
-    exploring the relationship between digital works and physical display.
-  </p>
-
-  <div class="links">
-    <a href="https://www.instagram.com/p/DGRrSNTur4_/?hl=es" target="_blank">DigShibuya</a>
-  </div>
-</div>
-   
-<div class="archive-item">
-  <h3>Maskay Gallery</h3>
-
-  <p class="meta">
-    <strong> Curated by Stipinpixel</strong> 
-  </p>
-
-  <p>
-    Digital art gallery rooted in the Northwest Argentina, emerging from the
-    Yungas and mountain territories. Connecting local practices with global digital
-    and Web3 ecosystems.
-  </p>
-
-  <a href="https://maskay.gallery/" target="_blank" class="archive-link">
-    maskay.gallery
-  </a>
-</div>
-
-<div class="archive-item"> 
-  <!--<img src="images/nox-tokyo.jpg" alt="Nox Gallery Tokyo" /> -->
-
-  <h3>Nox Gallery, Tokyo</h3>
-
-  <p class="meta">
-    <strong> Mini videogame installation · 2024</strong> 
-  </p>
-
-  <p class="desc">
-    Playful interactive prototype presented during Kismet Casa exhibition.
-  </p>
-
-  <div class="links">
-    <!-- <a href="https://test-of-yukk-movements.netlify.app/" target="_blank">Play</a> -->
-    <a href="https://www.instagram.com/p/C-Vj5zKS5L1/?hl=es" target="_blank">Instagram</a>
-  </div>
-</div>
-  
-<div class="archive-item">
-  <h3>GIF Gallery IRL — Switzerland</h3>
-  <p class="meta">
-    <strong> Animation Exhibitions · 2023-2024 </strong><br>
-  </p>
-  <p>
-    Selection of pixel-based GIF animations exhibited in museum, gallery and cinema
-    contexts in Switzerland, including institutional shows connected to art history
-    and digital heritage.
-  </p>
-      <a href="https://www.gif-gallery.com/hommage-a-paul-klee" target="_blank">
-        Hommage à Paul Klee
-      </a><br>
-    
-      <a href="https://www.instagram.com/p/CvvouCFO1rY/?hl=es&img_index=1" target="_blank">
-        Scherenschnitt 3.0 
-      </a><br>
-    
-      <a href="https://www.instagram.com/p/CxY1Q0UugIf/?hl=es&img_index=1" target="_blank">
-        Niesen Soft
-      </a><br>
-
-</div>
-
-<div class="archive-item"> 
-
-  <h3>TEZ ART MTL, Canada</h3>
-
-  <p class="meta">
-    <strong> Installation · 2023</strong> 
-  </p>
-
-  <p class="desc">
-    8 animated pieces selected by Sabato were exhibited with his curatorial is themed on dislocation/relocation and how artists use materialities to relocate themselves in this chaotic world.
-    organized by Strano.
-  </p>
-
-  <div class="links">
-    <a href="https://www.instagram.com/p/CxdwVmXOmii/?hl=es" target="_blank">Instagram</a>
-  </div>
-</div>
-
-  </div>
-</section>
-<!-- COLLECT -->
-
-<section id="collect">
-  <h2>Collect</h2>
-  <p>
-    Selected works from Suri Dimension are available on curated onchain platforms.
-  </p>
-
-  <div class="grid">
-    <div class="card markets">
-      <h3>Ethereum Generative</h3>
-      <a href="https://www.fxhash.xyz/u/stipinpixel"target="_blank" rel="noopener noreferrer">FXhash</a><br>
-    </div>
-    <div class="card markets">
-      <h3>Ethereum 1of1</h3>
-        <a href="https://www.transient.xyz/@stipinpixel" rel="noopener noreferrer">Transient Labs</a><br>
-        <a href="https://foundation.app/@stipinpixel"target="_blank" rel="noopener noreferrer">Foundation</a><br>
-    </div>
-    <div class="card markets">
-      <h3>Ethereum Editions</h3>
-      <a href="https://opensea.io/collection/wayra-turu"target="_blank" rel="noopener noreferrer">Opensea</a><br>
-      <a href="https://vibechain.com/market/wayra-wasi-pack?ref=1PNR6XSDV0OR"target="_blank" rel="noopener noreferrer">Vibechain</a><br>
-    </div>
-    <div class="card markets">
-      <h3>Tezos</h3>
-      <a href="https://objkt.com/@stipinpixel" target="_blank" rel="noopener noreferrer">Objkt</a><br>
-    </div>
-    
- 
-
-<p style="margin-top:32px; font-size:13px;">
-  Other platforms: 
-  <a href="https://www.linkedin.com/in/pablo-rivero-stipinpixel/" target="_blank" rel="noopener noreferrer">Linkedin</a>,
-<!-- <a href="https://zora.co/@stipinpixel" target="_blank" rel="noopener noreferrer">Zora</a>, -->
-  <a href="https://farcaster.xyz/stipinpixel" target="_blank" rel="noopener noreferrer">Farcaster</a>,
-  <a href="https://manifold.gallery/stipinpixel" target="_blank" rel="noopener noreferrer">Manifold</a>, 
-  <a href="https://www.mallow.art/u/stipinpixel" target="_blank" rel="noopener noreferrer">Mallow</a>, 
-  <a href="https://exchange.art/stipinpixel/nfts" target="_blank" rel="noopener noreferrer">Exchange Art</a>.
-</p>
-
-<div class="grid">
-      </div>
-
-    <div class="collect-visual">
-       <img src="./images/Yukk.gif" alt="Collect Artwork">
-    </div>
-  </div></section>
-
-<!-- INFO -->
-<section id="info">
-  <h2>Info</h2>
-
-<p>
-  <strong> StipinPixel </strong>  is a visual artist working with pixel systems, digital archaeology,
-  speculative interfaces and game-based environments.
-</p>
-
-<p>
-  Designer, artist, curator, educator and game developer,
-  working across physical and digital contexts.
-</p>
-
-<p>
-  His practice connects local heritage and global digital cultures through
-  pixel art, games, generative systems and collaborative projects focused on
-  cultural memory and experimental formats.
-</p>
-
-<div class="info">
-  <a href="#">
-    <img src="./images/stipinpixel.jpg" alt="stipinpixel" style="cursor: pointer;">
-  </a>
-</div>
-
-</section>
-
-<footer>
-  <h3><strong>© Pablo Rivero AKA StipinPixel</strong><h3>
-</footer>
+  <footer>© Pablo Rivero — Stipinpixel</footer>
 
 <script>
-const trazo = [
-            { x: 12, y: 2 }, { x: 13, y: 2 }, { x: 14, y: 2 }, { x: 15, y: 2 },
-            { x: 16, y: 2 }, { x: 17, y: 2 }, { x: 18, y: 2 }, { x: 11, y: 3 },
-            { x: 19, y: 3 }, { x: 10, y: 4 }, { x: 13, y: 4 }, { x: 14, y: 4 },
-            { x: 15, y: 4 }, { x: 16, y: 4 }, { x: 17, y: 4 }, { x: 20, y: 4 },
-            { x: 9, y: 5 }, { x: 11, y: 5 }, { x: 12, y: 5 }, { x: 15, y: 5 },
-            { x: 18, y: 5 }, { x: 19, y: 5 }, { x: 21, y: 5 }, { x: 8, y: 6 },
-            { x: 10, y: 6 }, { x: 15, y: 6 }, { x: 20, y: 6 }, { x: 22, y: 6 },
-            { x: 8, y: 7 }, { x: 10, y: 7 }, { x: 13, y: 7 }, { x: 15, y: 7 },
-            { x: 17, y: 7 }, { x: 20, y: 7 }, { x: 22, y: 7 }, { x: 8, y: 8 },
-            { x: 11, y: 8 }, { x: 15, y: 8 }, { x: 19, y: 8 }, { x: 22, y: 8 },
-            { x: 8, y: 9 }, { x: 12, y: 9 }, { x: 18, y: 9 }, { x: 22, y: 9 },
-            { x: 8, y: 10 }, { x: 12, y: 10 }, { x: 18, y: 10 }, { x: 22, y: 10 },
-            { x: 9, y: 11 }, { x: 11, y: 11 }, { x: 19, y: 11 }, { x: 21, y: 11 },
-            { x: 10, y: 12 }, { x: 15, y: 12 }, { x: 20, y: 12 }, { x: 11, y: 13 },
-            { x: 14, y: 13 }, { x: 16, y: 13 }, { x: 19, y: 13 }, { x: 11, y: 14 },
-            { x: 13, y: 14 }, { x: 15, y: 14 }, { x: 17, y: 14 }, { x: 19, y: 14 },
-            { x: 12, y: 15 }, { x: 18, y: 15 }, { x: 13, y: 16 }, { x: 14, y: 16 },
-            { x: 15, y: 16 }, { x: 16, y: 16 }, { x: 17, y: 16 }, { x: 15, y: 17 },
-            { x: 21, y: 17 }, { x: 8, y: 18 }, { x: 9, y: 18 }, { x: 10, y: 18 },
-            { x: 11, y: 18 }, { x: 12, y: 18 }, { x: 13, y: 18 }, { x: 14, y: 18 },
-            { x: 15, y: 18 }, { x: 16, y: 18 }, { x: 17, y: 18 }, { x: 18, y: 18 },
-            { x: 19, y: 18 }, { x: 20, y: 18 }, { x: 21, y: 18 }, { x: 22, y: 18 },
-            { x: 13, y: 19 }, { x: 14, y: 19 }, { x: 15, y: 19 }, { x: 16, y: 19 },
-            { x: 17, y: 19 }, { x: 21, y: 19 }, { x: 13, y: 20 }, { x: 14, y: 20 },
-            { x: 15, y: 20 }, { x: 16, y: 20 }, { x: 17, y: 20 }, { x: 13, y: 21 },
-            { x: 14, y: 21 }, { x: 15, y: 21 }, { x: 16, y: 21 }, { x: 17, y: 21 },
-            { x: 13, y: 22 }, { x: 14, y: 22 }, { x: 15, y: 22 }, { x: 16, y: 22 },
-            { x: 17, y: 22 }, { x: 13, y: 23 }, { x: 14, y: 23 }, { x: 15, y: 23 },
-            { x: 16, y: 23 }, { x: 17, y: 23 }, { x: 13, y: 24 }, { x: 14, y: 24 },
-            { x: 15, y: 24 }, { x: 16, y: 24 }, { x: 17, y: 24 }, { x: 13, y: 25 },
-            { x: 17, y: 25 }, { x: 13, y: 26 }, { x: 17, y: 26 }, { x: 13, y: 27 },
-            { x: 17, y: 27 }, { x: 13, y: 28 }, { x: 17, y: 28 }
-        ];
-
-const container = document.getElementById("suri-bg");
-const scale = 10;
-
-function drawTrazo(x, y) {
-  const offsetX = x - 120;
-  const offsetY = y - 120;
-
-  trazo.forEach(p => {
-    const d = document.createElement("div");
-    d.className = "pixel";
-    d.style.left = offsetX + p.x * scale + "px";
-    d.style.top = offsetY + p.y * scale + "px";
-    d.style.opacity = 1;
-    d.style.transition = "opacity 1.5s ease";
-    container.appendChild(d);
-
-    setTimeout(() => d.style.opacity = 0, 3000);
-    setTimeout(() => d.remove(), 4500);
-  });
-}
-
-
-/* --- EVENTOS --- */
-
-// Hover (desktop)
-container.addEventListener("mousemove", e => {
-  if (Math.random() > 0.8) {
-    drawTrazo(e.clientX, e.clientY);
-  }
-});
-
-// Click (desktop + mobile)
-container.addEventListener("click", e => {
-  drawTrazo(e.clientX, e.clientY);
-});
-
-
-// nubes
-
-function crearNubes() {
-  const contenedor = document.getElementById("nubes-fondo");
-  const misNubes = ["nube_1.png", "nube_2.png", "nube_3.png", "nube_4.png", "nube_5.png"]; 
-  const cantidad = 13; 
-
-  for (let i = 0; i < cantidad; i++) {
-    const img = document.createElement("img");
-    
-    const randomImg = misNubes[Math.floor(Math.random() * misNubes.length)];
-    img.src = "./images/" + randomImg;
-    img.className = "nube";
-
-    // --- AJUSTE DE EJES ---
-    // Eje X: 0 a 90 (para que no se corten en el borde derecho)
-    const posX = Math.random() * 90; 
-    
-    // Eje Y: Si quieres que estén arriba, usa (Math.random() * 40)
-    // Si quieres que estén en TODA la pantalla, usa (Math.random() * 100)
-    const posY = Math.random() * 100; 
-
-    // Tamaño: entre 150px y 350px
-    const size = Math.random() * 200 + 150; 
-    
-    img.style.left = posX + "vw";
-    img.style.top = posY + "vh";
-    img.style.width = size + "px";
-    
-    // Inversión aleatoria (para que no parezcan siempre el mismo PNG)
-    if (Math.random() > 0.5) {
-      img.style.transform = "scaleX(-1)";
-    }
-
-    contenedor.appendChild(img);
-  }
-}
-
-window.addEventListener("load", crearNubes);
-
-</script>
-
-<script>
-  if (window.location.hash) {
-    window.scrollTo(0, 0);
-  }
+  const blocks = document.querySelectorAll('.block');
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('in'); });
+  }, { threshold: 0.15 });
+  blocks.forEach(b => io.observe(b));
 </script>
 
 </body>
 </html>
-
-
-
-
-
