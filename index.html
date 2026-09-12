@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="es"> 
+<html lang="es">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -22,7 +22,8 @@
 
   --bg:   #000000;
   --fg:   #ffffff;
-  --blue: #0000a6;           /* color de reposo de TODO el nav */
+  --blue: #0000a6;           /* azul, se sigue usando en el wordmark y el pie */
+  --rest: #000000;           /* color de reposo del nav y de los cuadrados */
 
   /* color de cada sección — sólo aparece en hover y en la sección activa */
   --c-works:      #00c4c4;
@@ -47,7 +48,7 @@
 [data-section="curatorial"] { --accent: var(--c-curatorial); }
 [data-section="projects"]   { --accent: var(--c-projects); }
 [data-section="research"]   { --accent: var(--c-research); }
-[data-section="info"]       { --accent: var(--c-about); }
+[data-section="info"]       { --accent: var(--c-info); }
 [data-section="contact"]    { --accent: var(--c-contact); }
 
 *,*::before,*::after{ box-sizing:border-box; }
@@ -84,7 +85,7 @@ a{ color:inherit; text-decoration:none; }
   position:relative;
   display:flex; align-items:flex-end;
   height:var(--u); padding:0 3px;
-  background:var(--blue);
+  background:var(--rest);
   font-weight:600; font-size:18px; line-height:1;
   color:var(--fg); white-space:nowrap;
 }
@@ -110,17 +111,23 @@ a{ color:inherit; text-decoration:none; }
 .nav a[aria-current="page"]::before{ background:var(--item); }
 
 /* ---------- CUADRADOS: 4 sociales + idioma ---------- */
-.squares svg, .squares img{ display:block; width:100%; height:100%; image-rendering:pixelated; }
 .squares{ display:flex; align-items:flex-end; gap:34px; margin-left:50px; }
 .squares > *{
   display:flex; align-items:center; justify-content:center;
   width:var(--u); height:var(--u);
-  background:var(--blue); color:var(--fg);
+  background:var(--rest); color:var(--fg);
   border:0; padding:0; cursor:pointer;
   font-family:inherit; font-weight:600; font-size:13px; line-height:1;
 }
-.squares svg{ display:block; width:100%; height:100%; fill:currentColor; }
-.squares > *:hover{ background:var(--accent); }
+/* El PNG se usa como máscara, así el glifo se pinta con CSS y se puede
+   recolorear. Requiere PNG transparente: glifo opaco, fondo vacío. */
+.squares .ico{
+  width:100%; height:100%;
+  background:currentColor;
+  -webkit-mask:var(--src) center / contain no-repeat;
+          mask:var(--src) center / contain no-repeat;
+}
+.squares > *:hover{ color:var(--c-contact); }
 
 /* ---------- MARCO Y GRILLA ---------- */
 .wrap{
@@ -137,7 +144,7 @@ a{ color:inherit; text-decoration:none; }
 .band--thirds  { grid-template-columns:1fr 1fr 1fr; }
 .band--30-30-40{ grid-template-columns:295fr 295fr 380fr; }
 
-.tile{ position:relative; overflow:hidden; margin:0; background:var(--placeholder); }
+.tile{ position:relative; overflow:hidden; margin:0; background:#000; }
 .tile img{ width:100%; height:100%; object-fit:cover; }
 .tile--wide { aspect-ratio:700/394; }
 .tile--tall { aspect-ratio:295/394; }
@@ -293,8 +300,8 @@ const SECTIONS = [
 /* La grilla del home. layout: 70-30 · thirds · 30-30-40 · 30-70 */
 const HOME = [
   { layout:"70-30", tiles:[
-    { size:"wide", img:"assets/img/home/01.gif",
-      title:{ es:"Danza y magia... junto al dos caras...", en:"Dance and magic... beside the Two-Faced One..." } },
+    { size:"wide", img:"assets/img/home/01.JPEG",
+      title:{  es:"Ritual de arcilla para llorar", en:"Crying clay ritual" } },
     { size:"tall", img:"assets/img/home/02.JPEG",
       title:{ es:"Cerámica", en:"Clay" } },
   ]},
@@ -311,7 +318,7 @@ const HOME = [
   ]},
   { layout:"30-70", tiles:[
     { size:"sq",    img:"assets/img/home/09.JPEG", title:{ es:"Cerámica 2014/2015", en:"Clay 2014/2015" } },
-    { size:"panel", img:"assets/img/home/10.JPEG", title:{ es:"Ritual de arcilla para llorar", en:"Crying clay ritual" } },
+    { size:"panel", img:"assets/img/home/10.gif", title:{ es:"Danza y magia... junto al dos caras...", en:"Dance and magic... beside the Two-Faced One..." } },
   ]},
 ];
 
@@ -334,7 +341,7 @@ const ICONS = {
 };
 
 function icon(name){
-  return `<img src="${ICONS[name]}" alt="" width="25" height="25">`;
+  return `<span class="ico" style="--src:url('${ICONS[name]}')"></span>`;
 }
 
 /* ==========================================================================
@@ -430,7 +437,7 @@ function viewHome(){
     <div class="band band--${b.layout}">
       ${b.tiles.map(x => `
         <figure class="tile tile--${x.size}">
-          <img src="${x.img}" alt="${esc(t(x.title))}">
+          <img src="${x.img}" alt="${esc(t(x.title))}" loading="lazy" decoding="async">
           <figcaption class="tile__label">${esc(t(x.title))}</figcaption>
         </figure>`).join("")}
     </div>`).join("");
