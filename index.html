@@ -34,7 +34,7 @@
   --c-info:       #c46a00;
   --c-contact:    #b4b4b4;
 
-  --placeholder: #ff00ff;    /* si ves rosa, falta una imagen */
+   --placeholder: #000000;
 
   --accent: var(--blue);
   --accent-text: #ffffff;    /* texto legible del color de sección sobre negro */
@@ -104,7 +104,10 @@ p{ margin:0; }
 .gap2{ height:calc(var(--u) * 2); }
 
 /* ---------- IMÁGENES ---------- */
-.m{ position:relative; overflow:hidden; background:var(--placeholder); margin:0; }
+.m{ position:relative; overflow:hidden; background:#000; margin:0; }
+.m.missing{ background:var(--placeholder); }
+.m img{ opacity:0; transition:opacity .3s; }
+.m.ok img{ opacity:1; }
 .m img{ width:100%; height:100%; object-fit:cover; }
 .m--free.ok{ aspect-ratio:auto !important; background:none; }
 .m--free.ok img{ height:auto; object-fit:initial; }
@@ -1015,7 +1018,7 @@ document.addEventListener("click", e => {
 function media(src, alt, ratio, free){
   return `<div class="m${free ? " m--free" : ""}" style="aspect-ratio:${ratio}">
     <img src="${esc(src)}" alt="${esc(alt)}" loading="lazy"
-      onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></div>`;
+      onload="this.parentNode.classList.add('ok')" onerror="this.parentNode.classList.add('missing');this.remove()"></div>`;
 }
 function fig(src, alt, ratio, cap, free){
   return `<figure style="margin:0">${media(src, alt, ratio, free)}${cap ? `<figcaption class="cap"><span>${cap}</span></figcaption>` : ""}</figure>`;
