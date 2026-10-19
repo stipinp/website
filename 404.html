@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script>
+/* Esta página se sirve en CUALQUIER dirección que no exista
+   (stipinp.com/lo-que-sea o usuario.github.io/repo/lo-que-sea).
+   Calculamos la raíz del sitio para que las imágenes y los links funcionen. */
+(function(){
+  if (/^\/(obra|curaduria|proyectos|investigacion|info|contacto)(\/|$)/.test(location.pathname)) {
+    location.replace("/?p=" + encodeURIComponent(location.pathname));
+  }
+})();
+
+(function(){
+  var root = "/";
+  if (/\.github\.io$/.test(location.hostname)) {
+    var seg = location.pathname.split("/").filter(Boolean)[0];
+    if (seg) root = "/" + seg + "/";
+  }
+  document.write('<base href="' + root + '">');
+})();
+</script>
+<title>404 - Pablo Rivero</title>
+<meta name="robots" content="noindex">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;900&display=swap" rel="stylesheet">
+<style>
+:root{ --u:25px; --bg:#000; --fg:#fff; --blue:#0000a6; }
+*,*::before,*::after{ box-sizing:border-box; }
+html,body{ margin:0; background:var(--bg); color:var(--fg); }
+body{
+  min-height:100vh; display:flex; flex-direction:column;
+  font-family:"Montserrat",system-ui,sans-serif; -webkit-font-smoothing:antialiased;
+}
+a{ color:inherit; text-decoration:none; }
+:focus-visible{ outline:3px solid var(--fg); outline-offset:3px; }
+
+.top{ padding:var(--u) 50px; display:flex; align-items:center; gap:50px; }
+.top img{ width:100px; height:100px; image-rendering:pixelated; }
+.name{ display:flex; flex-direction:column; align-items:flex-end; background:var(--blue); padding:0 4px;
+  font-weight:900; font-size:24px; line-height:var(--u); }
+
+main{ flex:1; display:flex; align-items:center; justify-content:center; padding:var(--u) var(--u) 75px; }
+.err{ display:grid; grid-template-columns:auto auto; align-items:center; gap:75px; }
+.yukk{ width:240px; height:360px; image-rendering:pixelated; }
+.n{ margin:0; font-weight:900; font-size:160px; line-height:.85; letter-spacing:-0.04em; }
+.tag{ display:inline-block; margin-top:var(--u); background:var(--blue); font-weight:600; font-size:20px; line-height:var(--u); padding:0 6px; }
+.msg{ margin:var(--u) 0 0; max-width:380px; font-weight:500; font-size:17px; line-height:1.6; }
+.msg + .msg{ margin-top:6px; color:#bdbdbd; font-size:15px; }
+.btn{ display:inline-flex; margin-top:37.5px; background:var(--blue); font-weight:600; font-size:16px; padding:10px 14px; }
+.btn:hover{ background:#fff; color:#000; }
+
+/* los 5 cuadrados del pie, como en el resto del sitio */
+.foot{ display:flex; justify-content:center; gap:34px; padding:0 0 50px; }
+.foot a{ width:var(--u); height:var(--u); background:var(--blue); }
+.foot a:hover{ background:#00c4c4; }
+.foot img{ width:100%; height:100%; image-rendering:pixelated; }
+
+@media (max-width:700px){
+  .top{ padding:20px; gap:20px; }
+  .top img{ width:60px; height:60px; }
+  .name{ font-size:18px; line-height:20px; }
+  .err{ grid-template-columns:1fr; justify-items:center; text-align:center; gap:var(--u); }
+  .yukk{ width:160px; height:240px; }
+  .n{ font-size:96px; }
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <a href="./" aria-label="Pablo Rivero - Stipinpixel"><img src="assets/img/favicon.png" alt="" width="100" height="100"></a>
+  <a class="name" href="./"><span>pablo rivero</span><span>stipinpixel</span></a>
+</header>
+
+<main>
+  <div class="err">
+    <img class="yukk" src="assets/img/yukk.gif" alt="Yukk" width="240" height="360">
+    <div>
+      <p class="n">404</p>
+      <span class="tag">error</span>
+      <p class="msg" id="m1">Esta página no existe o cambió de lugar. Yukk tampoco la encuentra.</p>
+      <p class="msg" id="m2">This page doesn't exist or has moved. Yukk can't find it either.</p>
+      <a class="btn" id="home" href="./">Volver al inicio</a>
+    </div>
+  </div>
+</main>
+
+<div class="foot">
+  <a href="https://instagram.com/stipinp" target="_blank" rel="me noopener" aria-label="Instagram"><img src="assets/img/icons/instagram.png" alt="" width="25" height="25"></a>
+  <a href="https://www.linkedin.com/in/pablo-rivero-stipinpixel/" target="_blank" rel="me noopener" aria-label="LinkedIn"><img src="assets/img/icons/linkedin.png" alt="" width="25" height="25"></a>
+  <a href="https://x.com/stipinpixel" target="_blank" rel="me noopener" aria-label="X"><img src="assets/img/icons/x.png" alt="" width="25" height="25"></a>
+  <a href="https://pablorivero.itch.io/" target="_blank" rel="me noopener" aria-label="itch.io"><img src="assets/img/icons/itch.png" alt="" width="25" height="25"></a>
+</div>
+
+<script>
+/* Si el visitante eligió inglés en el sitio, el texto principal sale en inglés. */
+try {
+  if (localStorage.getItem("lang") === "en") {
+    document.documentElement.lang = "en";
+    document.getElementById("m1").textContent = "This page doesn't exist or has moved. Yukk can't find it either.";
+    document.getElementById("m2").textContent = "Esta página no existe o cambió de lugar. Yukk tampoco la encuentra.";
+    document.getElementById("home").textContent = "Back to home";
+  }
+} catch (e) {}
+</script>
+</body>
+</html>

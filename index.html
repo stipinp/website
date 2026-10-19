@@ -1,0 +1,1337 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<base href="/">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Pablo Rivero - Stipinpixel</title>
+<meta name="description" content="Pablo Rivero (Stipinpixel). Artista visual, curador e investigador. Tucumán, Argentina.">
+<link rel="icon" href="assets/img/favicon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;900&display=swap" rel="stylesheet">
+
+<style>
+/* =========================================================================
+   DISEÑO. Todo sale del módulo --u (25 px).
+   ========================================================================= */
+:root{
+  --u: 25px;
+  --content: 1020px;
+  --page: 1600px;
+
+  --bg:   #000000;
+  --fg:   #ffffff;
+  --blue: #0000a6;           /* reposo del menú, cuadrados y pie */
+  --line: #262626;           /* líneas finas de listas */
+  --muted:#c8c8c8;
+
+  /* un color por sección */
+  --c-works:      #00c4c4;
+  --c-curatorial: #00c400;
+  --c-projects:   #c400c4;
+  --c-research:   #c40000;
+  --c-info:       #c46a00;
+  --c-contact:    #b4b4b4;
+
+  --placeholder: #ff00ff;    /* si ves rosa, falta una imagen */
+
+  --accent: var(--blue);
+  --accent-text: #ffffff;    /* texto legible del color de sección sobre negro */
+
+  --tab-h:   calc(var(--u) / 2);
+  --tab-gap: calc(var(--u) / 2);
+}
+[data-section="works"]      { --accent: var(--c-works);      --accent-text:#00c4c4; }
+[data-section="curatorial"] { --accent: var(--c-curatorial); --accent-text:#00c400; }
+[data-section="projects"]   { --accent: var(--c-projects);   --accent-text:#ff7dff; }
+[data-section="research"]   { --accent: var(--c-research);   --accent-text:#ff6b6b; }
+[data-section="info"]       { --accent: var(--c-info);       --accent-text:#ffa64d; }
+[data-section="contact"]    { --accent: var(--c-contact);    --accent-text:#b4b4b4; }
+
+*,*::before,*::after{ box-sizing:border-box; }
+html{ background:var(--bg); }
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font-family:"Montserrat",system-ui,sans-serif;
+  font-size:16px; line-height:1.45;
+  -webkit-font-smoothing:antialiased;
+}
+img{ display:block; max-width:100%; }
+a{ color:inherit; text-decoration:none; }
+p{ margin:0; }
+:focus-visible{ outline:3px solid var(--fg); outline-offset:3px; }
+
+/* ---------- HEADER ---------- */
+.masthead{
+  max-width:var(--page); margin:0 auto; padding:var(--u) 50px;
+  display:flex; align-items:center; gap:var(--u);
+}
+.brand{ display:flex; align-items:center; gap:50px; flex:0 0 auto; }
+.brand__mark{ width:100px; height:100px; image-rendering:pixelated; }
+.brand__name{
+  display:flex; flex-direction:column; align-items:flex-end;
+  background:var(--blue); padding:0 4px;
+  font-weight:900; font-size:24px; line-height:var(--u); letter-spacing:-0.01em;
+}
+.nav{ margin-left:auto; display:flex; align-items:flex-end; gap:50px; }
+.nav a{
+  position:relative; display:flex; align-items:flex-end;
+  height:var(--u); padding:0 3px; background:var(--blue);
+  font-weight:600; font-size:18px; line-height:1; white-space:nowrap;
+}
+.nav a > span{ transform:translateY(.2em); }
+.nav a::before{
+  content:""; position:absolute; left:0; right:0;
+  bottom:calc(100% + var(--tab-gap)); height:var(--tab-h); background:transparent;
+}
+.nav a:hover, .nav a:focus-visible, .nav a[aria-current="page"]{ background:var(--item); }
+.nav a:hover::before, .nav a:focus-visible::before, .nav a[aria-current="page"]::before{ background:var(--item); }
+
+.squares{ display:flex; align-items:flex-end; gap:34px; margin-left:50px; }
+.squares > *{
+  display:flex; align-items:center; justify-content:center;
+  width:var(--u); height:var(--u); background:var(--blue); color:var(--fg);
+  border:0; padding:0; cursor:pointer;
+  font-family:inherit; font-weight:600; font-size:13px; line-height:1;
+}
+.squares img{ width:100%; height:100%; image-rendering:pixelated; }
+.squares > *:hover{ background:var(--accent); }
+
+/* ---------- MARCO ---------- */
+.wrap{ max-width:var(--content); margin:0 auto; }
+.gap{ height:var(--u); }
+.gap2{ height:calc(var(--u) * 2); }
+
+/* ---------- IMÁGENES ---------- */
+.m{ position:relative; overflow:hidden; background:var(--placeholder); margin:0; }
+.m img{ width:100%; height:100%; object-fit:cover; }
+.m--free.ok{ aspect-ratio:auto !important; background:none; }
+.m--free.ok img{ height:auto; object-fit:initial; }
+.cap{
+  display:flex; gap:10px; align-items:baseline; margin:12.5px 0 0;
+  font-weight:500; font-size:13px; line-height:1.45; color:#e6e6e6;
+}
+.cap::before{ content:""; flex:0 0 12.5px; height:12.5px; background:var(--accent); transform:translateY(1px); }
+
+/* ---------- HOME ---------- */
+.band{ display:grid; gap:var(--u); }
+.band--70-30   { grid-template-columns:700fr 295fr; }
+.band--30-70   { grid-template-columns:295fr 700fr; }
+.band--thirds  { grid-template-columns:1fr 1fr 1fr; }
+.band--30-30-40{ grid-template-columns:295fr 295fr 380fr; }
+.tile{ position:relative; overflow:hidden; display:block; }
+.tile--wide { aspect-ratio:700/394; } .tile--tall { aspect-ratio:295/394; }
+.tile--third{ aspect-ratio:393/295; } .tile--sq   { aspect-ratio:295/393; }
+.tile--half { aspect-ratio:380/393; } .tile--panel{ aspect-ratio:700/393; }
+.tile .m{ width:100%; height:100%; }
+.tile__label{
+  position:absolute; left:0; bottom:0;
+  background:var(--blue); color:var(--fg);
+  font-weight:600; font-size:18px; line-height:var(--u);
+  padding:0 8px; transform:translateY(100%);
+  transition:transform .12s steps(2);
+}
+.tile:hover .tile__label, .tile:focus-visible .tile__label{ transform:translateY(0); }
+
+/* ---------- BARRA DE SUBSECCIONES ---------- */
+.bar{ display:flex; flex-wrap:wrap; gap:12.5px; align-items:center; padding:var(--u) 0; }
+.bar__back{
+  display:inline-flex; align-items:center; height:37.5px; padding:0 12.5px;
+  background:var(--blue); font-weight:600; font-size:15px;
+}
+.bar__back:hover{ background:var(--accent); color:#000; }
+.chip{
+  display:inline-flex; align-items:center; height:37.5px; padding:0 12.5px;
+  border:2px solid var(--accent); font-weight:600; font-size:15px;
+}
+.chip:hover{ background:#151515; }
+.chip[aria-current="page"]{ background:var(--accent); color:#000; }
+
+/* ---------- TÍTULOS Y TEXTO ---------- */
+.lead{ display:grid; grid-template-columns:295fr 700fr; gap:var(--u); padding:var(--u) 0 50px; }
+.h1{ margin:0; font-weight:900; font-size:40px; line-height:1.1; letter-spacing:-0.02em; }
+.h1--xl{ font-size:48px; line-height:1.05; }
+.h2{ margin:0; font-weight:900; font-size:24px; line-height:1.2; }
+.kick{ font-weight:600; font-size:13px; color:var(--accent-text); }
+.prose p{ font-weight:500; font-size:17px; line-height:1.65; max-width:640px; }
+.prose p + p{ margin-top:20px; }
+.prose a{ text-decoration:underline; text-underline-offset:3px; }
+.link{ font-weight:600; font-size:14px; border-bottom:2px solid var(--accent); }
+.link:hover{ color:var(--accent-text); }
+
+/* ---------- OBRA: ANTESALA ---------- */
+.lines{ display:grid; gap:50px var(--u); padding:var(--u) 0 50px; }
+.lines + .lines{ padding-top:0; }
+.line{ display:flex; flex-direction:column; gap:14px; }
+.line__t{ margin:0; font-weight:900; font-size:26px; line-height:1.15; }
+.line:hover .line__t{ color:var(--accent-text); }
+
+/* ---------- TARJETAS ---------- */
+.cards{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:50px var(--u); padding-bottom:50px; }
+.card{ display:flex; flex-direction:column; }
+.card__b{ padding-top:14px; display:flex; flex-direction:column; gap:5px; }
+.card__y{ font-weight:600; font-size:13px; color:var(--accent-text); }
+.card__t{ margin:0; font-weight:900; font-size:20px; line-height:1.2; }
+.card__d{ font-weight:500; font-size:14px; line-height:1.45; }
+.card:hover .card__t{ color:var(--accent-text); }
+
+/* ---------- FICHA ---------- */
+.ftitle{ display:flex; justify-content:space-between; align-items:flex-end; gap:var(--u); padding:var(--u) 0; }
+.ftitle__y{ font-weight:600; font-size:20px; color:var(--accent-text); white-space:nowrap; }
+.fhead{ display:grid; grid-template-columns:600fr 345fr; gap:50px; padding:50px 0; }
+.sheet{ margin:0; display:grid; grid-template-columns:110px minmax(0,1fr); border-top:3px solid var(--accent); align-self:start; }
+.sheet dt{ padding:12px 0; font-weight:600; font-size:13px; color:var(--accent-text); border-bottom:1px solid var(--line); }
+.sheet dd{ margin:0; padding:12px 0 12px 12px; font-weight:500; font-size:14px; line-height:1.45; border-bottom:1px solid var(--line); }
+.sheet dd ul{ margin:0; padding-left:16px; }
+.sheet dd li + li{ margin-top:6px; }
+.gal{ display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:50px var(--u); padding-bottom:50px; }
+.bul{ margin:14px 0 0; padding-left:20px; font-weight:500; font-size:16px; line-height:1.6; }
+
+/* ---------- CURADURÍA ---------- */
+.show{ display:grid; grid-template-columns:700fr 295fr; gap:var(--u); }
+.show + .show{ margin-top:50px; }
+.show__side{ display:flex; flex-direction:column; gap:12px; padding:0 0 0 12.5px; }
+.show__t{ margin:0; font-weight:900; font-size:28px; line-height:1.1; }
+.show__t a:hover{ color:var(--accent-text); }
+.show__r{ font-weight:500; font-size:14px; line-height:1.45; }
+.quote{ margin:12px 0 0; padding-left:12.5px; border-left:3px solid var(--accent); font-weight:500; font-style:italic; font-size:15px; line-height:1.55; }
+.btn{ display:inline-flex; align-items:center; align-self:flex-start; background:var(--accent); color:#000; font-weight:600; font-size:14px; padding:8px 12px; }
+.btn:hover{ background:#fff; }
+.show__side .btn{ margin-top:auto; }
+.rows{ list-style:none; margin:0; padding:0; }
+.rows li{ display:grid; grid-template-columns:80px minmax(0,1fr) 300px; gap:var(--u); padding:14px 0; border-bottom:1px solid var(--line); align-items:baseline; }
+.rows b{ font-weight:600; font-size:14px; color:var(--accent-text); }
+.rows .t{ font-weight:900; font-size:17px; }
+.rows a.t:hover{ color:var(--accent-text); }
+.rows .v{ font-weight:500; font-size:13px; color:var(--muted); text-align:right; }
+.text p{ font-weight:500; font-size:18px; line-height:1.75; max-width:680px; }
+.text p + p{ margin-top:22px; }
+.text--poem p{ font-size:24px; font-style:italic; line-height:1.6; }
+
+/* ---------- PROYECTOS ---------- */
+.prjs{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:50px var(--u); padding:var(--u) 0 50px; }
+.prj{ display:flex; flex-direction:column; gap:14px; }
+.prj__t{ margin:0; font-weight:900; font-size:32px; line-height:1.1; }
+.prj:hover .prj__t{ color:var(--accent-text); }
+.phero{ display:grid; grid-template-columns:345fr 600fr; gap:50px; padding:var(--u) 0 50px; }
+.phero__t{ margin:0; font-weight:900; font-size:56px; line-height:1; }
+.phero .kick{ margin-top:12px; font-size:15px; }
+.note{ padding:12px 14px; border:2px solid var(--accent); font-size:14px !important; }
+.hl{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:50px var(--u); padding:var(--u) 0 50px; }
+.cap b{ font-weight:900; color:#fff; }
+.yr{ display:grid; grid-template-columns:125px minmax(0,1fr); border-top:2px solid var(--line); }
+.yr__y{ margin:0; padding:14px 0; font-weight:900; font-size:22px; color:var(--accent-text); }
+.ev{ list-style:none; margin:0; padding:0 0 12px; }
+.ev li{ display:grid; grid-template-columns:110px minmax(0,1fr); gap:18px; padding:11px 0; border-bottom:1px solid var(--line); font-size:14px; line-height:1.5; }
+.ev .d{ font-weight:600; color:var(--accent-text); }
+.ev b{ font-weight:900; }
+.ev--flat li{ grid-template-columns:minmax(0,1fr); }
+.toggle{ margin:12px 0 var(--u); background:transparent; border:2px solid var(--accent); color:#fff; font:600 14px "Montserrat",sans-serif; padding:10px 14px; cursor:pointer; }
+.toggle:hover{ background:var(--accent); color:#000; }
+.block{ padding:50px 0 0; }
+.block .h2{ margin-bottom:var(--u); }
+
+/* ---------- INVESTIGACIÓN ---------- */
+.rtop{ display:grid; grid-template-columns:295fr 700fr; gap:var(--u); padding:var(--u) 0 50px; }
+.entry{ display:grid; grid-template-columns:600fr 345fr; gap:50px; padding:0 0 50px; }
+.entry__t{ margin:6px 0 14px; font-weight:900; font-size:24px; line-height:1.2; }
+.entry .prose p{ font-size:15px; }
+.duo{ display:grid; grid-template-columns:1fr 1fr; gap:var(--u); }
+
+/* ---------- INFO ---------- */
+.bio{ display:grid; grid-template-columns:620fr 325fr; gap:50px; padding:var(--u) 0 50px; }
+.bio .h1{ margin-bottom:var(--u); }
+.cv{ display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:50px; padding:50px 0; }
+.cv .h2{ font-size:20px; padding-bottom:10px; border-bottom:3px solid var(--accent); }
+.cvl{ list-style:none; margin:0; padding:0; }
+.cvl li{ display:grid; grid-template-columns:70px minmax(0,1fr); gap:14px; padding:9px 0; border-bottom:1px solid var(--line); font-weight:500; font-size:14px; line-height:1.45; }
+.cvl b{ font-weight:600; color:var(--accent-text); }
+.contact{ display:grid; grid-template-columns:295fr 700fr; gap:var(--u); padding:50px 0; scroll-margin-top:var(--u); }
+.mail{ align-self:flex-start; font-weight:900; font-size:36px; line-height:1.1; border-bottom:4px solid var(--c-contact); }
+.mail:hover{ color:var(--c-contact); }
+.contact p{ margin-top:14px; font-weight:500; }
+.social{ list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:12.5px 25px; font-size:16px; }
+
+/* ---------- 404 ---------- */
+.err{ display:flex; flex-direction:column; align-items:center; text-align:center; gap:var(--u); padding:50px 0 75px; }
+.err__yukk{ width:240px; height:360px; image-rendering:pixelated; }
+.err__n{ margin:0; font-weight:900; font-size:120px; line-height:.9; letter-spacing:-0.04em; }
+.err__tag{ background:var(--blue); font-weight:600; font-size:18px; line-height:var(--u); padding:0 6px; }
+.err__msg{ font-weight:500; font-size:17px; max-width:420px; }
+.err .btn{ align-self:center; background:var(--blue); color:#fff; }
+.err .btn:hover{ background:#fff; color:#000; }
+
+/* ---------- FOOTER ---------- */
+.colophon{ padding:50px 0 75px; display:flex; flex-direction:column; align-items:center; gap:37px; }
+.colophon .squares{ margin-left:0; }
+.colophon__legal{ background:var(--blue); font-weight:600; font-size:18px; line-height:var(--u); padding:0 4px; }
+
+/* ---------- RESPONSIVE ---------- */
+@media (max-width:1200px){
+  .masthead{ padding:var(--u); }
+  .brand{ gap:var(--u); }
+  .nav{ gap:var(--u); }
+  .squares{ margin-left:var(--u); gap:var(--u); }
+}
+@media (max-width:1070px){
+  .wrap{ padding:0 var(--u); }
+}
+@media (max-width:1024px){
+  .masthead{ flex-wrap:wrap; }
+  .nav{ order:3; width:100%; margin-left:0; flex-wrap:wrap; row-gap:calc(var(--u)*1.5); }
+  .squares{ margin-left:auto; }
+  .brand__mark{ width:75px; height:75px; }
+}
+@media (max-width:768px){
+  :root{ --u:20px; }
+  .wrap{ padding:0 var(--u); }
+  .band, .lines, .cards, .gal, .lead, .fhead, .show, .rows li, .prjs, .phero, .hl,
+  .rtop, .entry, .bio, .cv, .contact{ grid-template-columns:1fr !important; }
+  .tile{ aspect-ratio:auto !important; }
+  .tile .m{ aspect-ratio:4/3; height:auto; }
+  .tile__label{ position:static; display:inline-block; transform:none; font-size:15px; }
+  .rows .v{ text-align:left; }
+  .yr, .ev li{ grid-template-columns:1fr; gap:4px; }
+  .ftitle{ flex-direction:column; align-items:flex-start; }
+  .h1, .h1--xl{ font-size:30px; }
+  .phero__t{ font-size:40px; }
+  .mail{ font-size:24px; }
+  .show__side{ padding:0; }
+  .nav{ gap:16px; }
+  .nav a{ font-size:15px; }
+  .brand__name{ font-size:18px; line-height:20px; }
+  .err__n{ font-size:80px; }
+}
+@media (prefers-reduced-motion:reduce){
+  *{ transition:none !important; }
+}
+</style>
+</head>
+
+<body data-section="home">
+<div id="app"></div>
+
+<script>
+/* ==========================================================================
+   1. CONTENIDO. Es lo único que hace falta tocar para cargar obra.
+      Cada texto va en { es:"…", en:"…" }. Las imágenes siguen una
+      convención de carpetas (ver LEEME.md): si una falta, se ve rosa.
+   ========================================================================== */
+
+const SITE = {
+  mark:  "assets/img/favicon.png",
+  email: "stipinp@gmail.com",
+  legal: "© Pablo Rivero - Stipinpixel",
+  cv:    { es:"assets/cv-pablo-rivero-es.pdf", en:"assets/cv-pablo-rivero-en.pdf" },
+  /* el cuadradito de idioma muestra el idioma EN EL QUE ESTÁS.
+     poné false y muestra al que vas a saltar. */
+  langShowsCurrent: false,
+  social: [
+    { id:"instagram", label:"Instagram", href:"https://instagram.com/stipinp" },
+    { id:"linkedin",  label:"LinkedIn",  href:"https://www.linkedin.com/in/pablo-rivero-stipinpixel/" },
+    { id:"x",         label:"X",         href:"https://x.com/stipinpixel" },
+    { id:"itchio",    label:"itch.io",   href:"https://pablorivero.itch.io/" },
+  ],
+};
+
+/* El menú. El orden de este array es el orden del menú. */
+const NAV = [
+  { id:"works",      route:"obra",          color:"var(--c-works)",      label:{ es:"Obra",          en:"Works" } },
+  { id:"curatorial", route:"curaduria",     color:"var(--c-curatorial)", label:{ es:"Curaduría",     en:"Curatorship" } },
+  { id:"projects",   route:"proyectos",     color:"var(--c-projects)",   label:{ es:"Proyectos",     en:"Projects" } },
+  { id:"research",   route:"investigacion", color:"var(--c-research)",   label:{ es:"Investigación", en:"Research" } },
+  { id:"info",       route:"info",          color:"var(--c-info)",       label:{ es:"Info",          en:"About" } },
+  { id:"contact",    route:"contacto",      color:"var(--c-contact)",    label:{ es:"Contacto",      en:"Contact" } },
+];
+
+/* --------------------------------------------------------------------------
+   HOME. layout: 70-30 · thirds · 30-30-40 · 30-70
+   "to" es adónde lleva el click (una ruta del sitio, sin el #).
+   -------------------------------------------------------------------------- */
+const HOME = [
+  { layout:"70-30", tiles:[
+    { size:"panel", img:"assets/img/home/10.JPEG", to:"obra/suridimension/ritual-de-arcilla-para-llorar",
+      title:{ es:"Ritual de arcilla para llorar", en:"Crying Clay Ritual" } },
+    { size:"tall", img:"assets/img/home/02.JPEG", to:"obra/instalaciones",
+      title:{ es:"Cerámica", en:"Clay" } },
+  ]},
+  { layout:"thirds", tiles:[
+    { size:"third", img:"assets/img/home/03.jpg", to:"obra/suridimension/rumi-raymi",
+      title:{ es:"La Danza de las Piedras (RUMI RAYMI)", en:"The Stone Dance (RUMI RAYMI)" } },
+    { size:"third", img:"assets/img/home/04.jpg", to:"obra/suridimension/rumi-raymi",
+      title:{ es:"La Danza de las Piedras (RUMI RAYMI)", en:"The Stone Dance (RUMI RAYMI)" } },
+    { size:"third", img:"assets/img/home/05.jpg", to:"obra",
+      title:{ es:"Acuarela", en:"Watercolor" } },
+  ]},
+  { layout:"30-30-40", tiles:[
+    { size:"sq",   img:"assets/img/home/06.JPEG", to:"obra/instalaciones",
+      title:{ es:"Arcilla", en:"Clay" } },
+    { size:"sq",   img:"assets/img/home/07.JPEG", to:"obra/instalaciones/puka-rikuy",
+      title:{ es:"Puka Rikuy", en:"Puka Rikuy" } },
+    { size:"half", img:"assets/img/home/08.jpg", to:"curaduria/que-esta-sucediendo-en-internet",
+      title:{ es:"¿Qué está sucediendo en internet? en ARTUC 2026", en:"What Is Happening on the Internet? at ARTUC 2026" } },
+  ]},
+  { layout:"30-70", tiles:[
+    { size:"sq",    img:"assets/img/home/09.JPEG", to:"obra/instalaciones",
+      title:{ es:"Cerámica 2014/2015", en:"Clay 2014/2015" } },
+    { size:"wide", img:"assets/img/home/01.gif", to:"obra/suridimension",
+      title:{ es:"Danza y magia... junto al dos caras...", en:"Dance and magic... beside the Two-Faced One..." } },
+      
+  ]},
+];
+
+/* --------------------------------------------------------------------------
+   OBRA. Cinco líneas. La portada de cada línea va en
+   assets/img/obra/<línea>/portada.jpg
+   -------------------------------------------------------------------------- */
+const LINES = [
+  { slug:"suridimension",
+    title:{ es:"Suri Dimension", en:"Suri Dimension" },
+    intro:{ es:"Universo creativo que trabaja con la iconografía y la arqueología del Noroeste Argentino a través del pixel art, el videojuego y la animación. A partir de calcos, relevamientos y piezas arqueológicas de culturas de la región, como Santamariana, Aguada, Candelaria, Tafí y San Francisco…",
+            en:"A creative universe that works with the iconography and archaeology of Northwest Argentina through pixel art, video games and animation. Drawing on archaeological tracings, surveys and artifacts from cultures of the region, such as Santamariana, Aguada, Candelaria, Tafí and San Francisco…" } },
+  { slug:"stipinpixel",
+    title:{ es:"Pixel art y animación", en:"Pixel Art and Animation" },
+    intro:{ es:"Obra firmada como stipinpixel. Animaciones en pixel art que registran escenas cotidianas, arquitectura urbana y paisajes del Noroeste Argentino, entre otras exploraciones.",
+            en:"Work signed as stipinpixel. Pixel art animations that record everyday scenes, urban architecture and landscapes of Northwest Argentina, among other explorations." } },
+  { slug:"generativo",
+    title:{ es:"Generativo", en:"Generative" },
+    intro:{ es:"Obras de arte generativo donde el código recombina el universo visual de Street Moment: cada edición produce un recorrido único por la ciudad, sus fachadas, vendedores y escenas cotidianas.",
+            en:"Generative works in which code recombines the visual universe of Street Moment: each edition produces a unique journey through the city, its façades, vendors and everyday scenes." } },
+  { slug:"instalaciones",
+    title:{ es:"Cerámica, escultura e instalación", en:"Ceramics, Sculpture and Installation" },
+    intro:null },
+  { slug:"inflable",
+    title:{ es:"Arquitectura inflable", en:"Inflatable Architecture" },
+    intro:{ es:"Práctica iniciada en 2019 con la fundación del colectivo HINCHAO y continuada desde 2025 de forma independiente, a través de instalaciones site-specific que exploran el aire como material constructivo y la relación entre cuerpo, espacio y volumen.",
+            en:"A practice that began in 2019 with the founding of the HINCHAO collective and has continued independently since 2025 through site-specific installations that explore air as a building material and the relationship between body, space and volume." },
+    see:{ to:"proyectos/hinchao", label:{ es:"Ver también: HINCHAO (2019-2023)", en:"See also: HINCHAO (2019-2023)" } } },
+];
+
+/* Etiquetas de la ficha técnica */
+const F = {
+  exhibited: { es:"Exhibida en",    en:"Exhibited at" },
+  exhibitedP:{ es:"Exhibidas en",   en:"Exhibited at" },
+  selected:  { es:"Seleccionada en",en:"Selected for" },
+  award:     { es:"Premio",         en:"Award" },
+  made:      { es:"Realización",    en:"Production" },
+  firing:    { es:"Cocción",        en:"Firing" },
+};
+
+/* Cada obra. Portada: assets/img/obra/<línea>/<slug>/portada.jpg
+   Galería: archivos de esa misma carpeta, con pie opcional. */
+const WORKS = [
+  /* ---- Suri Dimension ---- */
+  { line:"suridimension", slug:"resistencias-calchaquies-en-el-sumaq-kawsay", year:"2026",
+    title:{ es:"Resistencias Calchaquíes en el Sumaq Kawsay", en:"Resistencias Calchaquíes en el Sumaq Kawsay" },
+    tech:{ es:"Animación en pixel art", en:"Pixel art animation" },
+    body:{ es:["Figuras reconstruidas a partir de calcos arqueológicos de urnas funerarias santamarianas e incas, desarrolladas junto al Instituto de Arqueología y Museo de Tucumán (IAM)."],
+           en:["Figures reconstructed from archaeological tracings of Santamariana and Inca funerary urns, developed with the Instituto de Arqueología y Museo de Tucumán (IAM)."] },
+    facts:[ { k:F.exhibited, v:{ es:"Urban Digital Canvas Shanghái, 3.er Festival Internacional de Luz de Shanghái. Crystal Bridge y Shanghai Book City, distrito de Changning, Shanghái, China. Del 24/09 al 08/10/2026.",
+                                 en:"Urban Digital Canvas Shanghai, 3rd Shanghai International Light Festival. Crystal Bridge and Shanghai Book City, Changning District, Shanghai, China. 24 September - 8 October 2026." } } ],
+    gallery:[] },
+  { line:"suridimension", slug:"rumi-raymi", year:"2025",
+    title:{ es:"Rumi Raymi", en:"Rumi Raymi" },
+    tech:{ es:"Obra digital animada", en:"Animated digital work" },
+    body:{ es:["Obra digital animada basada en la iconografía de las huacas del sitio arqueológico de El Mollar, Tucumán."],
+           en:["Animated digital work based on the iconography of the huacas at the archaeological site of El Mollar, Tucumán."] },
+    facts:[ { k:F.exhibited, v:{ es:"DIGITAL SPRINGBOARD Vol.4 Results, Tokyo Node Labs y NEORT, eje “Media and Environment in Urban Space”. Tokio, Japón, del 05 al 21/12/2025.",
+                                 en:"DIGITAL SPRINGBOARD Vol.4 Results, Tokyo Node Labs and NEORT, under the theme “Media and Environment in Urban Space.” Tokyo, Japan, 5-21 December 2025." } } ],
+    gallery:[] },
+  { line:"suridimension", slug:"hypnosis-clay-ritual", year:"2025",
+    title:{ es:"Hypnosis Clay Ritual", en:"Hypnosis Clay Ritual" },
+    tech:{ es:"Obra digital animada", en:"Animated digital work" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.exhibited, v:{ es:"INFINITO Cuatro, QR Code Room, Espacio Central Park, Barracas, Buenos Aires, noviembre 2025.",
+                                 en:"INFINITO Cuatro, QR Code Room, Espacio Central Park, Barracas, Buenos Aires, November 2025." } } ],
+    gallery:[] },
+  { line:"suridimension", slug:"ritual-de-arcilla-para-llorar", year:"2025",
+    title:{ es:"Ritual de arcilla para llorar", en:"Ritual de arcilla para llorar (Crying Clay Ritual)" },
+    tech:{ es:"Videojuego", en:"Video game" },
+    body:{ es:["Videojuego inspirado en la cerámica de la cultura Candelaria."],
+           en:["Video game inspired by the ceramics of the Candelaria culture."] },
+    facts:[ { k:F.award, v:{ es:"Premio Innovación, Premio Ledesma de Artes Visuales 2025, Jujuy, Argentina.",
+                             en:"Innovation Prize, Premio Ledesma de Artes Visuales 2025, Jujuy, Argentina." } },
+            { k:F.exhibited, v:{ es:"Centro Cultural Culturarte, Jujuy, 2025.", en:"Centro Cultural Culturarte, Jujuy, 2025." } } ],
+    gallery:[] },
+  { line:"suridimension", slug:"clay-rituals", year:"2025",
+    title:{ es:"Grow Clay Ritual · Crying Clay Ritual · Magic to Have a Good Trip · Dance and Ritual at Night",
+            en:"Grow Clay Ritual · Crying Clay Ritual · Magic to Have a Good Trip · Dance and Ritual at Night" },
+    tech:{ es:"Obras digitales animadas", en:"Animated digital works" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.exhibitedP, v:{ es:"BYOD2, Miyashita Park North, Tokio, Japón, del 08 al 11/02/2025.",
+                                  en:"BYOD2, Miyashita Park North, Tokyo, Japan, 8-11 February 2025." } } ],
+    gallery:[] },
+  { line:"suridimension", slug:"stroll-through-the", year:"2024",
+    title:{ es:"Stroll through the (…)", en:"Stroll through the (…)" },
+    tech:{ es:"Demo de videojuego en desarrollo", en:"Video game demo in development" },
+    body:{ es:["Demo de videojuego en desarrollo, presentada junto a la investigación El pixel art como método de síntesis digital para el desarrollo de identidad cultural y patrimonial en videojuegos: viajes, elementos arqueológicos, mapas, bocetos y píxeles derivados de tallas en piedra y pinturas rupestres."],
+           en:["Video game demo in development, presented alongside the research Pixel Art as a Method of Digital Synthesis for the Development of Cultural and Heritage Identity in Video Games: travels, archaeological elements, maps, sketches and pixels derived from stone carvings and rock paintings."] },
+    facts:[ { k:F.exhibited, v:{ es:"Nox Gallery, Tokio, Japón, 27/07/2024.", en:"Nox Gallery, Tokyo, Japan, 27 July 2024." } } ],
+    gallery:[] },
+
+  /* ---- Pixel art y animación ---- */
+  { line:"stipinpixel", slug:"rgb-montreal", year:"2026",
+    title:{ es:"RGB Montreal, 5.ª edición", en:"RGB Montreal, 5th edition" },
+    tech:{ es:"Animaciones en pixel art", en:"Pixel art animations" },
+    body:{ es:["Selección de animaciones en pixel art exhibidas en un muro de televisores CRT. Curaduría de riniifish. Con nicolassassoon, 5tr4n0, aitso, MUTEK Montréal y Art on Tezos."],
+           en:["A selection of pixel art animations shown on a wall of CRT televisions. Curated by riniifish. With nicolassassoon, 5tr4n0, aitso, MUTEK Montréal and Art on Tezos."] },
+    facts:[ { k:F.exhibited, v:{ es:"RGB Montreal, 5.ª edición. Montreal, Canadá, del 25 al 30/07/2026.", en:"RGB Montreal, 5th edition. Montreal, Canada, 25-30 July 2026." } } ],
+    gallery:[] },
+  { line:"stipinpixel", slug:"a-line-is-a-pixel-that-went-out-for-a-walk", year:"2024",
+    title:{ es:"A line is a pixel that went out for a walk", en:"A line is a pixel that went out for a walk" },
+    tech:{ es:"Animación en pixel art", en:"Pixel art animation" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.exhibited, v:{ es:"Hommage à Paul Klee, Kulturmuseum Bern, curaduría de Jürg Kobel. Berna, Suiza, del 22/03 al 06/04/2024.",
+                                 en:"Hommage à Paul Klee, Kulturmuseum Bern, curated by Jürg Kobel. Bern, Switzerland, 22 March - 6 April 2024." } } ],
+    gallery:[] },
+  { line:"stipinpixel", slug:"rural-flowers-rural-nights", year:"2023",
+    title:{ es:"Rural Flowers · Rural Nights", en:"Rural Flowers · Rural Nights" },
+    tech:{ es:"Animaciones en pixel art", en:"Pixel art animations" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.exhibitedP, v:{ es:"Scherenschnitt 3.0, Galería Espace Vide, curaduría de Jürg Kobel. Thun, Suiza, julio 2023.",
+                                  en:"Scherenschnitt 3.0, Espace Vide Gallery, curated by Jürg Kobel. Thun, Switzerland, July 2023." } } ],
+    gallery:[] },
+  { line:"stipinpixel", slug:"tez-art-mtl", year:"2023",
+    title:{ es:"Selección de 8 GIFs animados", en:"Selection of 8 animated GIFs" },
+    tech:{ es:"GIFs animados", en:"Animated GIFs" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.exhibited, v:{ es:"TEZ ART MTL, curaduría de Sabato Visconti, en torno a la dislocación y la reubicación. Montreal, Canadá, 15 y 16/09/2023.",
+                                 en:"TEZ ART MTL, curated by Sabato Visconti, around the theme of dislocation and relocation. Montreal, Canada, 15-16 September 2023." } } ],
+    gallery:[] },
+  { line:"stipinpixel", slug:"niesen-soft", year:"2023",
+    title:{ es:"Niesen Soft", en:"Niesen Soft" },
+    tech:{ es:"Animación en pixel art", en:"Pixel art animation" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.exhibited, v:{ es:"Niesen 3.0, Kino Rex, curaduría de Jürg Kobel. Thun, Suiza, marzo y abril 2023.",
+                                 en:"Niesen 3.0, Kino Rex, curated by Jürg Kobel. Thun, Switzerland, March-April 2023." } } ],
+    gallery:[] },
+  { line:"stipinpixel", slug:"street-moment", year:"2021-",
+    title:{ es:"Street Moment (Momentos callejeros)", en:"Street Moment" },
+    tech:{ es:"Serie principal, más de 90 piezas", en:"Main series, more than 90 pieces" },
+    body:{ es:["Exploración urbana a través de bocetos pixelados de momentos efímeros vividos en Tucumán y otras ciudades donde habité, en el cruce entre la vida física y la digital."],
+           en:["An urban exploration through pixelated sketches of fleeting moments lived in Tucumán and other cities where the artist has lived, at the intersection of physical and digital life."] },
+    facts:[ { k:F.exhibited, list:[
+      { es:"Digital Dreams, Biennale ARTour, curaduría de Kika Nicolela. Musée de la Mine et du Développement Durable, Bois-du-Luc, Bélgica, del 25/06 al 10/09/2023.",
+        en:"Digital Dreams, Biennale ARTour, curated by Kika Nicolela. Musée de la Mine et du Développement Durable, Bois-du-Luc, Belgium, 25 June - 10 September 2023." },
+      { es:"Loading Festival, QR NFT Shop, iDAM FACC (Street Moment #41). Cádiz, España, 31/07/2023.",
+        en:"Loading Festival, QR NFT Shop, iDAM FACC (Street Moment #41). Cádiz, Spain, 31 July 2023." },
+      { es:"Proyecciones visuales desde una bicicleta (Street Moment #7). Montreal, Canadá, 18 y 19/06/2022.",
+        en:"Visual projections from a bicycle (Street Moment #7). Montreal, Canada, 18-19 June 2022." },
+      { es:"QR Code Show, Sagamore Hotel (Street Moment #3). Miami Beach, EE. UU., 17/03/2022.",
+        en:"QR Code Show, Sagamore Hotel (Street Moment #3). Miami Beach, USA, 17 March 2022." },
+    ] } ],
+    gallery:[] },
+
+  /* ---- Generativo ---- */
+  { line:"generativo", slug:"gentrification", year:"2026",
+    title:{ es:"Gentrification", en:"Gentrification" },
+    tech:{ es:"Serie de 1000 obras en pixel art, Verse", en:"Series of 1,000 pixel art works, Verse" },
+    body:{ es:["Vista desde arriba, la ciudad aparece como una maqueta cuyas piezas alguien sigue moviendo: un segundo piso donde había un patio, un café donde estaba el almacén, un edificio cuyo reflejo entra en la casa de enfrente. Mientras tanto, alguien sigue trabajando desde su casa, conectado, sin notar que el barrio se reordena a su alrededor.",
+               "Continúa Reterritorialization: si aquella era la casa intentando habitar una ciudad que cambió en su ausencia, esta es la ciudad cambiando, lote por lote, con todos todavía adentro."],
+           en:["Seen from above, the city looks like a scale model whose pieces someone keeps moving: a second floor where there used to be a patio, a café where the corner store used to be, a tall building whose glare reaches into the house across the street. Meanwhile, someone keeps working from home, online, without noticing the neighborhood being rearranged around them.",
+               "It continues Reterritorialization: if that series was the house trying to inhabit a city that changed in its absence, this one is the city doing the changing, lot by lot, while everyone is still inside."] },
+    facts:[],
+    gallery:[] },
+  { line:"generativo", slug:"reterritorialization", year:"2026",
+    title:{ es:"Reterritorialization", en:"Reterritorialization" },
+    tech:{ es:"Serie de 130 obras en pixel art, Verse", en:"Series of 130 pixel art works, Verse" },
+    body:{ es:["Una casa vuelve a una ciudad que se reconfiguró mientras no estaba: el puente fue demolido, el árbol de la plaza ya no está, las canchas de fútbol se volvieron locales. Hasta el interior de la casa cambió de olor. La serie trabaja sobre la tarea de reterritorializar la casa, y a uno mismo, para volver a habitarlas."],
+           en:["A house returns to a city that was reconfigured while it was away: the bridge has been torn down, the tree in the square is gone, the football pitches have become shops. Even the inside of the house smells different. The series explores the task of reterritorializing the house, and oneself, in order to inhabit them again."] },
+    facts:[], 
+    gallery:[] },
+  { line:"generativo", slug:"walking-through-the-city", year:"2022",
+    title:{ es:"Walking through the city", en:"Walking through the city" },
+    tech:{ es:"Serie de colecciones generativas en fxhash (Tezos)", en:"Series of generative collections on fxhash (Tezos)" },
+    body:{ es:[], en:[] },
+    bullets:["Walking through the city of El Bajo","Walking through the city of Famaillá","Observing the city through","Walking through the big Tucson city","Garden of the republic ✿"],
+    facts:[], gallery:[] },
+
+  /* ---- Cerámica, escultura e instalación ---- */
+  { line:"instalaciones", slug:"23-413153-64-934213", year:"2026",
+    title:{ es:"-23.413153, -64.934213", en:"-23.413153, -64.934213" },
+    tech:{ es:"Instalación. Arcilla, rocas y pigmentos de Valle Colorado, impresión 3D y pantalla LED",
+           en:"Installation. Clay, rocks and pigments from Valle Colorado, 3D printing and LED screen" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.selected, v:{ es:"79.º Salón Nacional de Rosario, Museo de Arte Contemporáneo de Rosario (MACRO). Jurado de selección: Pauline Fondevila, Mariana Robles y Bruno Juliano. Uno de los 30 proyectos seleccionados entre más de 1400 presentados de todo el país, la convocatoria más numerosa en la historia del certamen.",
+                                en:"79th Salón Nacional de Rosario, Museo de Arte Contemporáneo de Rosario (MACRO). Selection jury: Pauline Fondevila, Mariana Robles and Bruno Juliano. One of 30 projects selected from more than 1,400 submissions from across the country, the largest open call in the history of the salon." } } ],
+    gallery:[] },
+  { line:"instalaciones", slug:"fragmentos-para-reconocer", year:"2026",
+    title:{ es:"Fragmentos para reconocer", en:"Fragmentos para reconocer (Fragments to Recognize)" },
+    tech:{ es:"Instalación escultórica, 114 piezas", en:"Sculptural installation, 114 pieces" },
+    body:{ es:["Instalación escultórica de 114 piezas impresas en 3D y oxidadas con óxido de hierro. Cada fragmento fue generado con un script propio a partir del lenguaje formal de los menhires de El Mollar (cultura Tafí) y lleva grabada en hundido una iconografía dibujada en pixel art."],
+           en:["Sculptural installation of 114 3D-printed pieces, oxidized with iron oxide. Each fragment was generated with a custom script based on the formal language of the menhirs of El Mollar (Tafí culture), and bears an engraved iconography drawn in pixel art."] },
+    facts:[ { k:F.selected, v:{ es:"53.º Salón Nacional de Tucumán - Artes Visuales 2026, Ente Cultural de Tucumán, Dirección de Artes Visuales y Museo Provincial de Bellas Artes Timoteo E. Navarro, San Miguel de Tucumán.",
+                                en:"53rd Salón Nacional de Tucumán - Visual Arts 2026, Ente Cultural de Tucumán, Dirección de Artes Visuales and Museo Provincial de Bellas Artes Timoteo E. Navarro, San Miguel de Tucumán." } } ],
+    gallery:[] },
+  { line:"instalaciones", slug:"puka-rikuy", year:"2026",
+    title:{ es:"Puka Rikuy", en:"Puka Rikuy" },
+    tech:{ es:"Escultura cerámica", en:"Ceramic sculpture" },
+    body:{ es:["Escultura cerámica realizada en la quema comunitaria de Casa de Barro, coordinada por Verónica Grandolio. San Miguel de Tucumán, febrero 2026."],
+           en:["Ceramic sculpture made during the community firing at Casa de Barro, coordinated by Verónica Grandolio. San Miguel de Tucumán, February 2026."] },
+    facts:[], gallery:[] },
+  { line:"instalaciones", slug:"argencuencos", year:"2014-2026",
+    title:{ es:"Argencuencos", en:"Argencuencos" },
+    tech:{ es:"Obra cerámica de 3 piezas sobre soportes de alambre", en:"Ceramic work in 3 pieces on wire supports" },
+    body:{ es:["Modelada entre 2014 y 2015 en el taller de Técnico Ceramista de la Sección Nocturna de la Escuela de Bellas Artes “M° Atilio Terragni” (UNT), junto a Alicia Peralta. Los soportes se soldaron con Jorge García, Francisco Fernández y Jaime Pereyra.",
+               "Doce años después, con los alambres ya oxidados y algunas grietas acumuladas en las mudanzas, las piezas fueron cocidas en la quema comunitaria de Casa de Barro, en la Casa del Bicentenario, acompañada por Verónica Grandolio y la comunidad de ceramistas y horneras. San Miguel de Tucumán, 2026."],
+           en:["Modeled between 2014 and 2015 in the Ceramics Technician workshop of the Evening Section at the Escuela de Bellas Artes “M° Atilio Terragni” (UNT), alongside Alicia Peralta. The supports were welded with Jorge García, Francisco Fernández and Jaime Pereyra.",
+               "Twelve years later, with the wires already rusted and a few cracks gathered through move after move, the pieces were fired at the Casa de Barro community firing, at the Casa del Bicentenario, accompanied by Verónica Grandolio and the community of ceramists and kiln builders. San Miguel de Tucumán, 2026."] },
+    facts:[], gallery:[] },
+  { line:"instalaciones", slug:"iconografia-y-gestos-de-las-manos", year:"2013-2015",
+    title:{ es:"Proyecto investigación sobre iconografía del continente americano y los gestos de las manos al modelar",
+            en:"Research Project on the Iconography of the American Continent and the Gestures of Hands While Modeling" },
+    tech:{ es:"24 piezas de cerámica", en:"24 ceramic pieces" },
+    body:{ es:["Investigación sobre la iconografía de las culturas americanas y el gesto de modelar: manos con distintos movimientos trabajando sobre una misma materia, como un brindis entre culturas. Se amasa para que las partículas se unan y se cuece lentamente, a fuego ardiente, para que algo se concrete.",
+               "Realizada en el taller de Técnico Ceramista de la Sección Nocturna de la Escuela de Bellas Artes “M° Atilio Terragni” (UNT), junto a Alicia Peralta."],
+           en:["A study of the iconography of American cultures and the gesture of modeling: hands with different movements working on the same material, like a toast among cultures. Clay is kneaded so its particles come together, and slowly fired in a burning kiln so that something takes shape.",
+               "Made in the Ceramics Technician workshop of the Evening Section at the Escuela de Bellas Artes “M° Atilio Terragni” (UNT), alongside Alicia Peralta."] },
+    facts:[ { k:F.firing, v:{ es:"2015", en:"2015" } } ], gallery:[] },
+
+  /* ---- Arquitectura inflable ---- */
+  { line:"inflable", slug:"factor-360", year:"2026",
+    title:{ es:"Factor 360°", en:"Factor 360°" },
+    tech:{ es:"Instalación site-specific de arquitectura inflable", en:"Site-specific inflatable architecture installation" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.made, v:{ es:"Indómita Productora, Tucumán, Argentina.", en:"Indómita Productora, Tucumán, Argentina." } } ],
+    gallery:[] },
+  { line:"inflable", slug:"tener-sujetar", year:"2025",
+    title:{ es:"Tener / Sujetar", en:"Tener / Sujetar (To Hold / To Grasp)" },
+    tech:{ es:"Instalación site-specific de arquitectura inflable", en:"Site-specific inflatable architecture installation" },
+    body:{ es:[], en:[] },
+    facts:[ { k:F.made, v:{ es:"Indómita Productora, Tucumán, Argentina.", en:"Indómita Productora, Tucumán, Argentina." } } ],
+    gallery:[] },
+];
+
+/* --------------------------------------------------------------------------
+   CURADURÍA. Imagen: assets/img/curaduria/<slug>/portada.jpg
+   featured:true = aparece grande, con imagen y cita.
+   -------------------------------------------------------------------------- */
+const CURATORIAL = {
+  intro:{ es:"Práctica curatorial centrada en el arte digital como campo situado, atenta a los contextos de producción y a los procesos que atraviesan a los artistas, especialmente en el Noroeste Argentino y otras regiones periféricas. La curaduría se entiende como una herramienta de mediación donde exhibición, comunidad y formación se integran para acompañar y contextualizar la producción artística contemporánea. La mayor parte de estos proyectos se desarrolló desde MASKAY GALLERY.",
+          en:"A curatorial practice focused on digital art as a situated field, attentive to the conditions of production and the processes artists go through, especially in Northwest Argentina and other peripheral regions. Curating is understood as a tool for mediation in which exhibition, community and education come together to support and contextualize contemporary artistic production. Most of these projects were developed through MASKAY GALLERY." },
+  items:[
+    { slug:"que-esta-sucediendo-en-internet", year:"2026", featured:true,
+      title:{ es:"¿Qué está sucediendo en internet?", en:"¿Qué está sucediendo en internet? (What Is Happening on the Internet?)" },
+      date:{ es:"Abril 2026", en:"April 2026" },
+      place:{ es:"Primera Feria de Arte Contemporáneo de Tucumán (ARTUC)", en:"First Contemporary Art Fair of Tucumán (ARTUC)" },
+      role:{ es:"MASKAY · Curaduría, producción y texto curatorial", en:"MASKAY · Curation, production and curatorial text" },
+      desc:{ es:"Materialización de las colecciones de 12 artistas digitales argentinos. Incluye el offspace Trastienda, con performances durante la feria.",
+             en:"Materialization of the collections of 12 Argentine digital artists. Includes the Trastienda offspace, with performances during the fair." },
+      quote:{ es:"En ese movimiento pasa de mano en mano, de cuerpo en cuerpo, se propaga. […] La imagen sucede.",
+              en:"In that movement it passes from hand to hand, from body to body, it spreads. […] The image happens." },
+      text:{
+        es:["La simultaneidad siempre existió, pero con la aparición de internet se desliza en dos capas de realidad, una donde transcurren el calor y las lluvias intensas, y otra donde, conectados a la red, posteamos, scrolleamos, navegamos. Existe la sensación de que las correspondencias temporales no son la misma en cada capa, como si los procesos de información digital estuvieran ligados tanto a la cantidad de personas que la reciben como a la velocidad con que esa información circula.",
+            "Mientras intentamos sacar el agua de nuestras casas, que acaba de irrumpir por nuestra puerta de manera inesperada, ya circulan cientos de reels sobre esa inundación, comentados, compartidos, likeados. Esta tensión también atraviesa el arte contemporáneo y en particular, el arte digital, y habilita pensar si internet nos propone nuevas lógicas de acción o si, por el contrario, trasladamos a la red nuestras propias lógicas.",
+            "En la manera en que la imagen es transportada, se configura como algo que circula, que no permanece fijo. ¿Dónde se carga esa imagen? Quien lleva una bolsa con una imagen impresa convierte ese objeto en un dispositivo de circulación: transporta, contiene, envuelve, se deforma, se usa, se habita.",
+            "¿Quién carga esa imagen? ¿Quién la acarrea? ¿Cuál es la infraestructura que la sostiene? ¿Es la persona o el andamio que sostiene a los albañiles en una obra? El andamio deja ver el sostén, expone la construcción mientras ocurre. La imagen al pasar del andamio al hombro, a la mano, sigue sostenida desplazándose de un sistema a otro, entrando en circulación y recorriendo el espacio que habitamos.",
+            "En ese movimiento pasa de mano en mano, de cuerpo en cuerpo, se propaga. Como el agua que atraviesa nuestras piernas, no se observa a distancia, se atraviesa, circula. La imagen sucede."],
+        en:["Simultaneity has always existed, but with the arrival of the internet it slides into two layers of reality: one where the heat and the heavy rains go on, and another where, connected to the network, we post, scroll and browse. There is a feeling that time does not correspond in the same way in each layer, as if the processes of digital information were tied both to the number of people who receive it and to the speed at which that information circulates.",
+            "While we try to get the water out of our homes, after it unexpectedly burst through our front door, hundreds of reels about that flood are already circulating, commented on, shared, liked. This tension also runs through contemporary art, and digital art in particular, and it opens up the question of whether the internet offers us new logics of action or whether, on the contrary, we carry our own logics into the network.",
+            "In the way the image is carried, it takes shape as something that circulates, that does not stay fixed. Where is that image loaded? Whoever carries a bag with a printed image turns that object into a device of circulation: it transports, contains, wraps, deforms, is used, is inhabited.",
+            "Who carries that image? Who hauls it? What infrastructure holds it up? Is it the person, or the scaffolding that supports the builders on a construction site? Scaffolding lets the support be seen; it exposes the construction while it happens. As the image passes from the scaffolding to the shoulder, to the hand, it stays held up, moving from one system to another, entering circulation and travelling through the space we inhabit.",
+            "In that movement it passes from hand to hand, from body to body, it spreads. Like the water running past our legs, it is not observed from a distance; it is crossed, it circulates. The image happens."] } },
+
+    { slug:"sobre-periferia", year:"2025", featured:true, poem:true,
+      title:{ es:"Sobre Periferia", en:"Sobre Periferia (On Periphery)" },
+      date:{ es:"Noviembre 2025", en:"November 2025" },
+      place:{ es:"Casa Museo de la Ciudad, San Miguel de Tucumán", en:"Casa Museo de la Ciudad, San Miguel de Tucumán" },
+      role:{ es:"MASKAY · Curaduría, montaje y texto curatorial", en:"MASKAY · Curation, installation and curatorial text" },
+      desc:null,
+      quote:{ es:"Caminando por las Yungas, desde el borde de la montaña desbordó arcilla, cayó al centro del camino.",
+              en:"Walking through the Yungas, clay overflowed from the edge of the mountain, and fell into the middle of the path." },
+      text:{ es:["Caminando por las Yungas,","desde el borde de la montaña desbordó arcilla,","cayó al centro del camino."],
+             en:["Walking through the Yungas,","clay overflowed from the edge of the mountain,","and fell into the middle of the path."] } },
+
+    { slug:"maskay-rooms", year:"2025", featured:false,
+      title:{ es:"Maskay Rooms", en:"Maskay Rooms" },
+      date:{ es:"2025", en:"2025" },
+      place:{ es:"OBJKT, en línea", en:"OBJKT, online" },
+      role:{ es:"MASKAY · Curaduría", en:"MASKAY · Curation" },
+      desc:{ es:"Exposición colectiva con artistas nacionales e internacionales.", en:"Group exhibition with national and international artists." },
+      quote:null, text:null },
+
+    { slug:"impact", year:"2024", featured:true,
+      title:{ es:"IMPACT", en:"IMPACT" },
+      date:{ es:"Diciembre 2024", en:"December 2024" },
+      place:{ es:"Listening Party Drop Collective Vol. 10, Dune Park, Buenos Aires", en:"Listening Party Drop Collective Vol. 10, Dune Park, Buenos Aires" },
+      role:{ es:"MASKAY × Música W3 · Curaduría de videoarte y texto curatorial", en:"MASKAY × Música W3 · Video art curation and curatorial text" },
+      desc:{ es:"Drop colectivo de 11 videoclips nacidos de colaboraciones entre artistas sonoros y visuales que trabajaron desde el anonimato mutuo.",
+             en:"Collective drop of 11 video clips born from collaborations between sound and visual artists who worked in mutual anonymity." },
+      quote:{ es:"Cuando la digitalidad colisiona con la roca, la tierra y el territorio, emergen naturalezas y reglas distintas.",
+              en:"When digitality collides with rock, earth and territory, different natures and rules emerge." },
+      text:{
+        es:["Cuando la digitalidad colisiona con la roca, la tierra y el territorio, emergen naturalezas y reglas distintas. Lo digital, dependiente de dispositivos para manifestarse, encuentra su opuesto y su sostén en lo terrestre: aquello que puede tocarse, sentirse y recorrerse en su irregularidad. De esta colisión surgen nuestras propias lógicas de impacto, un marco conceptual que articula la esencia de este drop colectivo.",
+            "Maskay Community, desde el norte de Argentina, y Música W3, desde Buenos Aires, se reúnen en una coreografía descentralizada que conecta comunidades. Este impacto se materializa en la intersección entre creadores sonoros y visuales, cuyas colaboraciones surgen desde un anonimato mutuo, permitiendo que la colisión genere nuevas narrativas estéticas.",
+            "El resultado: una colección de 11 videoclips que trascienden tanto lo digital como lo terrestre. Estas piezas encuentran sentido en cada transacción, en cada mint. Cada interacción se convierte en una experiencia estética.",
+            "Música W3 y Maskay exploran los límites de lo posible en el arte Web3, cuestionando la propia naturaleza de los encuentros creativos y las formas en que el arte se comparte en la era de la descentralización."],
+        en:["When digitality collides with rock, earth and territory, different natures and rules emerge. The digital, which depends on devices to manifest itself, finds its opposite and its support in the terrestrial: what can be touched, felt and walked across in all its irregularity. From this collision arise our own logics of impact, a conceptual framework that articulates the essence of this collective drop.",
+            "Maskay Community, from northern Argentina, and Música W3, from Buenos Aires, come together in a decentralized choreography that connects communities. This impact takes shape at the intersection between sound and visual creators, whose collaborations arise from mutual anonymity, allowing the collision to generate new aesthetic narratives.",
+            "The result: a collection of 11 video clips that go beyond both the digital and the terrestrial. These pieces find meaning in every transaction, in every mint. Each interaction becomes an aesthetic experience.",
+            "Música W3 and Maskay explore the limits of what is possible in Web3 art, questioning the very nature of creative encounters and the ways art is shared in the age of decentralization."] } },
+
+    { slug:"busqueda-perderse", year:"2024", featured:true,
+      title:{ es:"Búsqueda (hacer arte) / Perderse (en las reglas del mercado)", en:"Búsqueda (hacer arte) / Perderse (en las reglas del mercado) (Searching (Making Art) / Getting Lost (in the Rules of the Market))" },
+      date:{ es:"22/11 al 01/12/2024", en:"22 November - 1 December 2024" },
+      place:{ es:"5.ª Semana de las Artes Visuales, Casa Museo de la Ciudad, San Miguel de Tucumán", en:"5th Visual Arts Week, Casa Museo de la Ciudad, San Miguel de Tucumán" },
+      role:{ es:"MASKAY · Curaduría, montaje y texto curatorial", en:"MASKAY · Curation, installation and curatorial text" },
+      desc:{ es:"Exposición de obra física y digital de 18 artistas, articulada en torno a una instalación central con dos pantallas.",
+             en:"Exhibition of physical and digital work by 18 artists, organized around a central installation with two screens." },
+      quote:{ es:"¿Por qué necesitamos mostrarnos? ¿Qué significa hacer arte en la escena local y luego trascender al ámbito global?",
+              en:"Why do we need to show ourselves? What does it mean to make art in the local scene and then reach the global sphere?" },
+      text:{
+        es:["Durante la Semana de las Artes en Tucumán, la muestra organizada por la comunidad Maskay y curada por Pablo Rivero tuvo lugar en la Casa Museo de la Ciudad en San Miguel de Tucumán. Esta exhibición fusionó arte físico y digital, destacando el potencial transformador de la Web3 para artistas de diversas disciplinas.",
+            "El espacio contó con una instalación central compuesta por un soporte estructural con dos pantallas, donde se presentaron obras y procesos creativos de 18 artistas.",
+            "En la escena central de la muestra se destacó un concepto fundamental: “Artistas apoyan artistas”. Este espacio buscó derribar barreras geográficas y tecnológicas, fomentando la descentralización y la transparencia genuina.",
+            "¿Por qué necesitamos mostrarnos? ¿Qué significa hacer arte en la escena local y luego trascender al ámbito global? ¿Serán celebrados nuestros logros o reconocidos nuestros esfuerzos?",
+            "Maskay enfatizó la importancia de la comunidad como refugio, alentando a no perderse en las dinámicas del mercado, o al menos, a no hacerlo en soledad."],
+        en:["During Visual Arts Week in Tucumán, the exhibition organized by the Maskay community and curated by Pablo Rivero took place at the Casa Museo de la Ciudad in San Miguel de Tucumán. The exhibition brought together physical and digital art, highlighting the transformative potential of Web3 for artists from different disciplines.",
+            "The space featured a central installation made up of a structural support with two screens, where works and creative processes by 18 artists were presented.",
+            "At the center of the exhibition stood a fundamental idea: “Artists support artists.” The space sought to break down geographical and technological barriers, encouraging decentralization and genuine transparency.",
+            "Why do we need to show ourselves? What does it mean to make art in the local scene and then reach the global sphere? Will our achievements be celebrated, or our efforts recognized?",
+            "Maskay stressed the importance of community as a refuge, encouraging us not to get lost in the dynamics of the market, or at least not to do so alone."] } },
+
+    { slug:"hogar-mint-y-temporal", year:"2024", featured:true,
+      title:{ es:"Hogar, Mint y Temporal", en:"Hogar, Mint y Temporal (Home, Mint and Storm)" },
+      date:{ es:"11 y 12/10/2024", en:"11-12 October 2024" },
+      place:{ es:"Festival Tormenta, Festival de Arte Electrónico y Digital, Horco Molle, Tucumán", en:"Festival Tormenta, Electronic and Digital Art Festival, Horco Molle, Tucumán" },
+      role:{ es:"MASKAY · Curaduría, montaje y texto curatorial", en:"MASKAY · Curation, installation and curatorial text" },
+      desc:null,
+      quote:{ es:"¡No tengo internet! ¿Puedo ir a mintear a tu casa?", en:"I've got no internet! Can I come mint at your place?" },
+      text:{
+        es:["Esta colección de arte digital explora la conexión entre lo cotidiano y lo fantástico, tomando como punto de partida la experiencia creativa desde el hogar en Tucumán. Artistas enfrentan limitaciones tecnológicas de su región mientras proyectan sus sueños, metas e ilusiones a través de un lenguaje visual que fusiona lo tangible con lo onírico.",
+            "El hogar es un escenario donde el tiempo fluye entre la calma de la siesta y la intensidad del temporal, momentos que invitan a la introspección. La lluvia, más allá de ser un fenómeno climático, actúa como un detonante de reflexiones sobre logros y desafíos.",
+            "Artistas que apoyan artistas. Mi casa es la casa de mis amigos, encuentro a las obras atravesadas por el misticismo de la región…",
+            "¡Uy! ¡Se cortó la luz!",
+            "¡No tengo internet! ¿Puedo ir a mintear a tu casa?",
+            "Amigo, me robaron el celular, creo que voy a tener que trabajar desde tu tablet.",
+            "¡Otra vez! Se rompió la compu porque la usamos todos en casa... ¿podrás ayudarme?",
+            "Tengo solo un celu, ¡vení a escanear tus dibujos en casa! De aquí hacemos el mint.",
+            "Me desaparecí tres meses porque mi compu no soporta programas para dibujar. ¿Alguien me ayuda a crackearlos?"],
+        en:["This digital art collection explores the connection between the everyday and the fantastic, taking as its starting point the creative experience of working from home in Tucumán. Artists face the technological limitations of their region while projecting their dreams, goals and hopes through a visual language that merges the tangible with the dreamlike.",
+            "Home is a stage where time flows between the calm of the siesta and the intensity of the storm, moments that invite introspection. Rain, beyond being a weather event, acts as a trigger for reflections on achievements and challenges.",
+            "Artists who support artists. My house is my friends' house; I find the works crossed by the mysticism of the region…",
+            "Oops! The power's out!",
+            "I've got no internet! Can I come mint at your place?",
+            "Friend, my phone got stolen, I think I'll have to work from your tablet.",
+            "Again! The computer broke because we all use it at home... can you help me?",
+            "I've only got one phone, come scan your drawings at my place! We'll mint from here.",
+            "I disappeared for three months because my computer can't handle drawing programs. Can anyone help me crack them?"] } },
+
+    { slug:"maskay-x-plum", year:"2024", featured:false,
+      title:{ es:"Maskay x Plum", en:"Maskay x Plum" },
+      date:{ es:"2024", en:"2024" },
+      place:{ es:"Festival PLUM, Tafí del Valle, Tucumán", en:"Festival PLUM, Tafí del Valle, Tucumán" },
+      role:{ es:"MASKAY · Curaduría, montaje y talleres", en:"MASKAY · Curation, installation and workshops" },
+      desc:null, quote:null, text:null },
+
+    { slug:"senaletica-y-simbologia", year:"2024", featured:true,
+      title:{ es:"Señalética y simbología", en:"Señalética y simbología (Signage and Symbology)" },
+      date:{ es:"27/07/2024", en:"27 July 2024" },
+      place:{ es:"Nox Gallery, Tokio, Japón", en:"Nox Gallery, Tokyo, Japan" },
+      role:{ es:"Kismet Casa, Residencia de Creadores y Hackers · Curaduría y montaje", en:"Kismet Casa, Creators and Hackers Residency · Curation and installation" },
+      desc:{ es:"Exhibición de arte digital producido durante la residencia Kismet Casa.", en:"Exhibition of digital art produced during the Kismet Casa residency." },
+      quote:null,
+      text:{
+        es:["Exhibición de arte digital producido durante la residencia Kismet Casa. La curaduría tomó la identidad visual de la residencia para desarrollar un sistema de señalética que funcionó como recorrido y como declaración visual. Cada símbolo, asociado a una idea (viaje, camino, flotar, arte, crear, fluir), orientaba físicamente al visitante y aportaba contexto a las obras. Así, la muestra presentaba en conjunto el trabajo de los artistas, su historia y el viaje compartido durante la residencia."],
+        en:["Exhibition of digital art produced during the Kismet Casa residency. The curatorial approach drew on the residency's visual identity to develop a signage system that worked both as a route through the space and as a visual statement. Each symbol, tied to an idea (travel, path, float, art, create, flow), physically guided visitors and gave context to the works. The exhibition thus presented, as a whole, the artists' work, their stories and the journey they shared during the residency."] } },
+
+    { slug:"primer-metaverso-de-artistas-emergentes", year:"2024", featured:false,
+      title:{ es:"Primer metaverso de artistas emergentes en Tucumán", en:"Primer metaverso de artistas emergentes en Tucumán (First Metaverse of Emerging Artists in Tucumán)" },
+      date:{ es:"2024", en:"2024" },
+      place:{ es:"Fundación Tamañoficio", en:"Fundación Tamañoficio" },
+      role:{ es:"Curaduría, montaje y desarrollo del entorno virtual, junto a Arq. Angeles Franco", en:"Curation, installation and development of the virtual environment, with Arch. Angeles Franco" },
+      desc:null, quote:null, text:null },
+  ],
+};
+
+/* --------------------------------------------------------------------------
+   PROYECTOS. Portada: assets/img/proyectos/<slug>/portada.jpg
+   Destacados: assets/img/proyectos/<slug>/<archivo>
+   -------------------------------------------------------------------------- */
+const PROJECTS = [
+  { slug:"maskay", title:"MASKAY", period:"2021-", periodLabel:{ es:"2021-presente", en:"2021-present" },
+    role:{ es:"Fundador y director", en:"Founder and director" },
+    intro:{
+      es:["MASKAY es una plataforma curatorial y de formación en arte digital con base en Tucumán, Argentina. Nació en 2021 como comunidad de artistas, con el objetivo de acompañar a creadores del Noroeste Argentino, de otras regiones del interior y de territorios periféricos en la visibilización y circulación de su obra en el ecosistema digital y Web3.",
+          "Ante la escasez de recursos y de acceso a la formación tecnológica en estas regiones, MASKAY desarrolla curadurías, exhibiciones presenciales y en línea, producciones colaborativas y talleres, entendiendo la curaduría como una herramienta de mediación donde exhibición, comunidad y educación se integran. Actualmente funciona como galería de arte digital.",
+          "Su lema, desde el inicio: Artists support artists."],
+      en:["MASKAY is a curatorial and educational platform for digital art based in Tucumán, Argentina. It was founded in 2021 as an artists' community, with the aim of supporting creators from Northwest Argentina, other inland regions and peripheral territories in making their work visible and circulating it within the digital and Web3 ecosystem.",
+          "In response to the scarcity of resources and access to technological training in these regions, MASKAY develops curatorial projects, in-person and online exhibitions, collaborative productions and workshops, understanding curating as a tool for mediation in which exhibition, community and education come together. It currently operates as a digital art gallery.",
+          "Its motto, from the beginning: Artists support artists."] },
+    note:null, highlights:[],
+    blocks:[
+      { title:{ es:"Exhibiciones y curadurías", en:"Exhibitions and curatorial projects" }, flat:true, items:[
+        { d:"2026", t:{ es:"¿Qué está sucediendo en internet?", en:"¿Qué está sucediendo en internet?" }, x:{ es:"Materialización de las colecciones de 12 artistas digitales argentinos. Primera Feria de Arte Contemporáneo de Tucumán (ARTUC). Incluye el offspace Trastienda, con performances durante la feria.", en:"Materialization of the collections of 12 Argentine digital artists. First Contemporary Art Fair of Tucumán (ARTUC). Includes the Trastienda offspace, with performances during the fair." }, to:"curaduria/que-esta-sucediendo-en-internet" },
+        { d:"2025", t:{ es:"Sobre Periferia", en:"Sobre Periferia" }, x:{ es:"Casa Museo de la Ciudad, Tucumán.", en:"Casa Museo de la Ciudad, Tucumán." }, to:"curaduria/sobre-periferia" },
+        { d:"2025", t:{ es:"Maskay Rooms", en:"Maskay Rooms" }, x:{ es:"Exposición en línea con artistas nacionales e internacionales, OBJKT.", en:"Online exhibition with national and international artists, OBJKT." }, to:"curaduria/maskay-rooms" },
+        { d:"2024", t:{ es:"Búsqueda (hacer arte) / Perderse (en las reglas del mercado)", en:"Búsqueda (hacer arte) / Perderse (en las reglas del mercado)" }, x:{ es:"5.ª Semana de las Artes Visuales, Museo Casa de la Ciudad, Tucumán.", en:"5th Visual Arts Week, Museo Casa de la Ciudad, Tucumán." }, to:"curaduria/busqueda-perderse" },
+        { d:"2024", t:{ es:"Hogar, Mint y Temporal", en:"Hogar, Mint y Temporal" }, x:{ es:"Festival Tormenta, Horco Molle, Tucumán.", en:"Festival Tormenta, Horco Molle, Tucumán." }, to:"curaduria/hogar-mint-y-temporal" },
+        { d:"2024", t:{ es:"Maskay x Plum", en:"Maskay x Plum" }, x:{ es:"Exposición y talleres, Festival PLUM, Tafí del Valle.", en:"Exhibition and workshops, Festival PLUM, Tafí del Valle." }, to:"curaduria/maskay-x-plum" },
+        { d:"2024", t:{ es:"IMPACT", en:"IMPACT" }, x:{ es:"Curaduría de videoarte, Listening Party Drop Collective Vol. 10, Dune Park, Buenos Aires.", en:"Video art curation, Listening Party Drop Collective Vol. 10, Dune Park, Buenos Aires." }, to:"curaduria/impact" },
+        { d:"2024", t:{ es:"Primer metaverso de artistas emergentes en Tucumán", en:"Primer metaverso de artistas emergentes en Tucumán" }, x:{ es:"Con Arq. Angeles Franco, Fundación Tamañoficio.", en:"With Arch. Angeles Franco, Fundación Tamañoficio." }, to:"curaduria/primer-metaverso-de-artistas-emergentes" },
+      ]},
+      { title:{ es:"Producción colaborativa", en:"Collaborative production" }, flat:true, items:[
+        { d:"2026", t:{ es:"ARTUC", en:"ARTUC" }, x:{ es:"Colecciones digitales materializadas en obras con certificados en arcilla cocida con los datos del contrato inteligente. Con el Club de Grabado de Tucumán y Casa de Barro.", en:"Digital collections materialized as screen-printed tote bags and fired clay certificates bearing the smart contract data. With the Club de Grabado de Tucumán and Casa de Barro." } },
+        { d:"2025", t:{ es:"Pachamama Interactiva", en:"Pachamama Interactiva" }, x:{ es:"Obra generativa colaborativa, OBJKT.", en:"Collaborative generative work, OBJKT." } },
+        { d:"2025", t:{ es:"Our Home", en:"Our Home" }, x:{ es:"Collage digital colaborativo, OBJKT.", en:"Collaborative digital collage, OBJKT." } },
+      ]},
+      { title:{ es:"Alianzas y colaboraciones", en:"Partners and collaborators" }, paragraphs:{
+        es:["Art on Tezos · Fundación Tamañoficio · Club de Grabado de Tucumán · Casa de Barro","Diego Gelatti, Marisa Rossini, Anabel Guiscafre, Verónica Grandolio."],
+        en:["Art on Tezos · Fundación Tamañoficio · Club de Grabado de Tucumán · Casa de Barro","Diego Gelatti, Marisa Rossini, Anabel Guiscafre, Verónica Grandolio."] } },
+      { title:{ es:"Links", en:"Links" }, links:[
+        { href:"https://www.maskay.gallery/", label:"maskay.gallery" },
+        { href:"https://instagram.com/maskaygallery", label:"@maskaygallery" } ] },
+    ] },
+
+  { slug:"hinchao", title:"HINCHAO", periodLabel:{ es:"2019-2023", en:"2019-2023" },
+    role:{ es:"Fundador e integrante", en:"Founder and member" },
+    intro:{
+      es:["Colectivo de arquitectura inflable e intervención urbana dedicado a la exploración espacial a partir de estructuras neumáticas: dispositivos construidos con materiales capaces de contener el aire. Fundado el 27 de mayo de 2019, el grupo estuvo integrado también por David Valdez Ruiz, Mariano Taljuk, Daniel Colina y Matías Sosa, estudiantes de la Facultad de Arquitectura y Urbanismo (UNT)."],
+      en:["An inflatable architecture and urban intervention collective focused on spatial exploration through pneumatic structures, devices built from materials capable of containing air. Founded on 27 May 2019, the group also included David Valdez Ruiz, Mariano Taljuk, Daniel Colina and Matías Sosa, students at the Faculty of Architecture and Urbanism (UNT)."] },
+    note:{ es:"Las actividades listadas a continuación corresponden a mi período de participación en el colectivo, entre 2019 y 2023. A partir de entonces, el proyecto quedó a cargo de David Valdez Ruiz y Daniel Colina, quienes llevan adelante su etapa de cierre.",
+           en:"The activities listed below correspond to my period of participation in the collective, from 2019 to 2023. Since then, the project has been led by David Valdez Ruiz and Daniel Colina, who are carrying out its closing stage." },
+    see:{ to:"obra/inflable", label:{ es:"Ver también: Obra / Arquitectura inflable", en:"See also: Works / Inflatable Architecture" } },
+    highlights:[
+      { file:"agora-decodificado.jpg", t:"ÁgoRA decodificado", cap:{ es:"2021. Intervención inflable interactiva con realidad aumentada. Parque 9 de Julio, San Miguel de Tucumán.", en:"2021. Interactive inflatable intervention with augmented reality. Parque 9 de Julio, San Miguel de Tucumán." } },
+      { file:"innovar.jpg", t:"INNOVAR", cap:{ es:"2019. Concurso Nacional de Innovaciones INNOVAR.", en:"2019. INNOVAR 2019 National Innovation Competition" } },
+      { file:"limon-rock.jpg", t:"Limón Rock", cap:{ es:"2019. Inflable habitable en forma de limón. Club Atlético Villa Mitre, Tafí Viejo.", en:"2019. Habitable lemon-shaped inflatable. Club Atlético Villa Mitre, Tafí Viejo." } },
+      { file:"arbol-de-navidad.jpg", t:{ es:"Árbol de Navidad inflable", en:"Inflatable Christmas tree" }, cap:{ es:"2019. 16 m de altura. Feria Navideña de Arte Abasto.", en:"2019. 16 metres tall. Feria Navideña de Arte Abasto." } },
+    ],
+    blocks:[
+      { title:{ es:"Cronología", en:"Chronology" }, fold:8, years:[
+        { y:"2023", items:[
+          { d:{ es:"18/05", en:"18 May" }, t:{ es:"Día Internacional de los Museos.", en:"International Museum Day." }, x:{ es:"Intervención inflable inmersiva en el marco del lema ICOM “Museos, sostenibilidad y bienestar”. Casa Histórica, San Miguel de Tucumán.", en:"Immersive inflatable intervention under the ICOM theme “Museums, Sustainability and Well-being.” Casa Histórica, San Miguel de Tucumán." } } ] },
+        { y:"2022", items:[
+          { d:{ es:"20/04", en:"20 April" }, t:{ es:"Acto de reencuentro.", en:"Acto de reencuentro (Reunion Ceremony)." }, x:{ es:"Intervención inflable con proyecciones de VJ Federico Grassetto (colorationgr). Facultad de Derecho y Ciencias Sociales, UNT.", en:"Inflatable intervention with projections by VJ Federico Grassetto (colorationgr). Faculty of Law and Social Sciences, UNT." } } ] },
+        { y:"2021", items:[
+          { d:{ es:"11/12", en:"11 December" }, t:{ es:"ÁgoRA decodificado.", en:"ÁgoRA decodificado (ÁgoRA Decoded)." }, x:{ es:"Intervención inflable interactiva con realidad aumentada, en colaboración con Laboratorio de Arquitectura Receptiva. Proyecto seleccionado para las intervenciones en el espacio público de Encontrarte 2021. Santiago del Estero.", en:"Interactive inflatable intervention with augmented reality, in collaboration with Laboratorio de Arquitectura Receptiva. Selected for the public space interventions at Encontrarte 2021. Santiago del Estero." } },
+          { d:{ es:"27/11", en:"27 November" }, t:{ es:"Cierre de la 2.ª Semana de Artes Visuales.", en:"Closing of the 2nd Visual Arts Week." }, x:{ es:"Intervención inflable en el hall de acceso del Teatro San Martín, San Miguel de Tucumán.", en:"Inflatable intervention in the entrance hall of the Teatro San Martín, San Miguel de Tucumán." } },
+          { d:{ es:"26/11", en:"26 November" }, t:{ es:"ÁgoRA decodificado.", en:"ÁgoRA decodificado (ÁgoRA Decoded)." }, x:{ es:"Intervención inflable interactiva con realidad aumentada, en colaboración con Laboratorio de Arquitectura Receptiva. Proyecto seleccionado para la 2.ª Semana de Artes Visuales, organizada por la Secretaría de Cultura de Tucumán. Parque 9 de Julio, San Miguel de Tucumán. Visitado por Marta Minujín.", en:"Interactive inflatable intervention with augmented reality, in collaboration with Laboratorio de Arquitectura Receptiva. Selected for the 2nd Visual Arts Week, organized by the Tucumán Secretariat of Culture. Parque 9 de Julio, San Miguel de Tucumán. Visited by Marta Minujín." } },
+          { d:{ es:"12/10", en:"12 October" }, t:{ es:"Diseño Nuestro.", en:"Diseño Nuestro." }, x:{ es:"Intervención inflable en la fachada de la Casa Museo de la Ciudad, San Miguel de Tucumán.", en:"Inflatable intervention on the façade of the Casa Museo de la Ciudad, San Miguel de Tucumán." } } ] },
+        { y:"2019", items:[
+          { d:{ es:"13/12", en:"13 December" }, t:{ es:"Deriva de un deseo.", en:"Deriva de un deseo (Drift of a Desire)." }, x:{ es:"Intervención en colaboración con el CUEEBA, en el marco de la muestra del proyecto institucional de la Escuela de Bellas Artes, UNT. MUNT, San Miguel de Tucumán.", en:"Intervention in collaboration with CUEEBA, as part of the exhibition of the institutional project of the School of Fine Arts, UNT. MUNT, San Miguel de Tucumán." } },
+          { d:{ es:"06-08/12", en:"6-8 December" }, t:{ es:"Feria Navideña de Arte Abasto.", en:"Feria Navideña de Arte Abasto (Christmas Art Fair)." }, x:{ es:"Presentación de un árbol de Navidad inflable de 16 m de altura.", en:"Presentation of a 16-metre-tall inflatable Christmas tree." } },
+          { d:{ es:"03/12", en:"3 December" }, t:{ es:"Un día para dar.", en:"Un día para dar (A Day to Give)." }, x:{ es:"Evento realizado junto a Tramarte y el CUEEBA (Centro Único de Estudiantes de la Escuela de Bellas Artes, UNT).", en:"Event held with Tramarte and CUEEBA (Student Union of the School of Fine Arts, UNT)." } },
+          { d:{ es:"03/12", en:"3 December" }, t:{ es:"Día Mundial del Sida.", en:"World AIDS Day." }, x:{ es:"Participación en la XV Campaña de Asesoramiento y Testeo de VIH.", en:"Participation in the 15th HIV Counselling and Testing Campaign." } },
+          { d:{ es:"02/12", en:"2 December" }, t:{ es:"Taller Relámpago.", en:"Taller Relámpago (Flash Workshop)." }, x:{ es:"Construcción colectiva del árbol de Navidad inflable. Facultad de Arquitectura y Urbanismo, UNT.", en:"Collective construction of the inflatable Christmas tree. Faculty of Architecture and Urbanism, UNT." } },
+          { d:{ es:"09/11", en:"9 November" }, t:{ es:"01 Band.", en:"01 Band." }, x:{ es:"Escenografía inflable para backstage.", en:"Inflatable backstage set design." } },
+          { d:{ es:"30-31/10", en:"30-31 October" }, t:{ es:"Cubo 555 en el Rectorado UNT.", en:"Cubo 555 at the UNT Rectorate." }, x:{ es:"Acción de intervención y protesta contra la megaminería (Minera Alumbrera), junto al Taller de Escultura de la Facultad de Artes, UNT.", en:"Intervention and protest action against large-scale mining (Minera Alumbrera), with the Sculpture Workshop of the Faculty of Arts, UNT." } },
+          { d:{ es:"13/10", en:"13 October" }, t:{ es:"Limón Rock.", en:"Limón Rock." }, x:{ es:"Propuesta escenográfica integral: inflable habitable en forma de limón con tachas y tres conos escenográficos. Club Atlético Villa Mitre, Tafí Viejo, Tucumán.", en:"Comprehensive set design proposal: a habitable lemon-shaped inflatable with studs and three scenic cones. Club Atlético Villa Mitre, Tafí Viejo, Tucumán." } },
+          { d:{ es:"12/10", en:"12 October" }, t:{ es:"Micromundos ocultos de la historia.", en:"Micromundos ocultos de la historia (Hidden Microworlds of History)." }, x:{ es:"Intervención inflable junto al CIME (CONICET-UNT), con proyecciones de VJ Federico Grassetto (colorationgr). MUNT, San Miguel de Tucumán.", en:"Inflatable intervention with CIME (CONICET-UNT), with projections by VJ Federico Grassetto (colorationgr). MUNT, San Miguel de Tucumán." } },
+          { d:{ es:"05/10", en:"5 October" }, t:{ es:"La Noche de los Museos.", en:"Night of the Museums." }, x:{ es:"Presentación de Cubo 555 junto al Taller de Escultura de la Facultad de Artes, UNT. Talleres Ferroviarios de Tafí Viejo, Tucumán.", en:"Presentation of Cubo 555 with the Sculpture Workshop of the Faculty of Arts, UNT. Talleres Ferroviarios (Railway Workshops), Tafí Viejo, Tucumán." } },
+          { d:{ es:"02-04/10", en:"2-4 October" }, t:{ es:"IMAJIM.", en:"IMAJIM." }, x:{ es:"Muestra anual de Diseño Gráfico. Instituto JIM.", en:"Annual Graphic Design Exhibition. Instituto JIM." } },
+          { d:{ es:"25-27/09", en:"25-27 September" }, t:{ es:"Concurso Nacional de Innovaciones INNOVAR 2019.", en:"INNOVAR 2019 National Innovation Competition." }, x:{ es:"Participación como expositores, con inclusión en el catálogo impreso y digital. Usina del Arte, La Boca, Buenos Aires.", en:"Exhibitors, featured in the printed and digital catalogue. Usina del Arte, La Boca, Buenos Aires." } },
+          { d:{ es:"21-22/09", en:"21-22 September" }, t:{ es:"Calavera no Chilla.", en:"Calavera no Chilla." }, x:{ es:"Intervención inflable inmersiva con proyecciones de VJ Federico Grassetto (colorationgr) sobre ilustraciones de Vero Corrales.", en:"Immersive inflatable intervention with projections by VJ Federico Grassetto (colorationgr) of illustrations by Vero Corrales." } },
+          { d:{ es:"16-20/09", en:"16-20 September" }, t:{ es:"Semana del Artista.", en:"Artist's Week." }, x:{ es:"Presentación de Cubo 555, intervención colectiva de HINCHAO y estudiantes del Taller de Escultura de la Facultad de Artes, UNT. Facultad de Artes UNT, Plaza San Martín y Plaza de los Decididos, San Miguel de Tucumán.", en:"Presentation of Cubo 555, a collective intervention by HINCHAO and students of the Sculpture Workshop of the Faculty of Arts, UNT. Faculty of Arts UNT, Plaza San Martín and Plaza de los Decididos, San Miguel de Tucumán." } },
+          { d:{ es:"14/09", en:"14 September" }, t:{ es:"Los lápices dicen Nunca Más.", en:"Los lápices dicen Nunca Más (The Pencils Say Never Again)." }, x:{ es:"MUNT, San Miguel de Tucumán.", en:"MUNT, San Miguel de Tucumán." } },
+          { d:{ es:"09-13/09", en:"9-13 September" }, t:{ es:"Workshop “Aproximaciones de la arquitectura + escultura”.", en:"Workshop “Approaches from Architecture + Sculpture.”" }, x:{ es:"Taller de Escultura, Facultad de Artes, UNT.", en:"Sculpture Workshop, Faculty of Arts, UNT." } },
+          { d:{ es:"05/09", en:"5 September" }, t:{ es:"Acelera Club After Office.", en:"Acelera Club After Office." }, x:{ es:"Semillero.", en:"Semillero." } },
+          { d:{ es:"25/08", en:"25 August" }, t:{ es:"Festival Feminista “Resistencias (Re)existencias”.", en:"Feminist Festival “Resistencias (Re)existencias.”" }, x:null },
+          { d:{ es:"24-25/08", en:"24-25 August" }, t:{ es:"Feria Arte Abasto.", en:"Feria Arte Abasto (Art Fair)." }, x:null },
+          { d:{ es:"18/07", en:"18 July" }, t:{ es:"Concierto MIDI.", en:"MIDI Concert." }, x:{ es:"Centro Cultural Eugenio Flavio Virla, San Miguel de Tucumán.", en:"Centro Cultural Eugenio Flavio Virla, San Miguel de Tucumán." } },
+          { d:{ es:"13-15/07", en:"13-15 July" }, t:{ es:"Taller en campamento.", en:"Camp workshop." }, x:{ es:"Exploradores Argentinos de Don Bosco.", en:"Exploradores Argentinos de Don Bosco (scouting group)." } },
+          { d:{ es:"11/07", en:"11 July" }, t:{ es:"Charla “Aproximaciones de la arquitectura a la indumentaria”.", en:"Talk “Approaches from Architecture to Clothing Design.”" }, x:{ es:"Para estudiantes de la carrera de Diseño de Indumentaria y Textil, Facultad de Arquitectura y Urbanismo, UNT.", en:"For students of Clothing and Textile Design, Faculty of Architecture and Urbanism, UNT." } },
+          { d:{ es:"05/07", en:"5 July" }, t:{ es:"Festival EBA UNT.", en:"EBA UNT Festival." }, x:{ es:"MUNT, San Miguel de Tucumán.", en:"MUNT, San Miguel de Tucumán." } },
+          { d:{ es:"05/07", en:"5 July" }, t:{ es:"Intervención-protesta por la preservación del patrimonio.", en:"Protest intervention for heritage preservation." }, x:{ es:"Ex Casa Conte, Alberdi 150 (hoy demolida), San Miguel de Tucumán.", en:"Former Casa Conte, Alberdi 150 (since demolished), San Miguel de Tucumán." } },
+          { d:{ es:"03 y 05/07", en:"3 and 5 July" }, t:{ es:"Taller HINCHAO.", en:"HINCHAO Workshop." }, x:{ es:"Para estudiantes de la Escuela de Bellas Artes, UNT.", en:"For students of the School of Fine Arts, UNT." } },
+          { d:{ es:"26/06", en:"26 June" }, t:{ es:"Charla “Aproximaciones de la arquitectura a la escultura”.", en:"Talk “Approaches from Architecture to Sculpture.”" }, x:{ es:"Taller de Escultura de la Tarde, Facultad de Artes, UNT.", en:"Afternoon Sculpture Workshop, Faculty of Arts, UNT." } },
+          { d:{ es:"14-17/06", en:"14-17 June" }, t:{ es:"Workshop.", en:"Workshop." }, x:{ es:"Exploradores Argentinos de Don Bosco.", en:"Exploradores Argentinos de Don Bosco (scouting group)." } },
+          { d:{ es:"05/06", en:"5 June" }, t:{ es:"Festival de la Luz.", en:"Festival of Light." }, x:{ es:"Facultad de Arquitectura y Urbanismo, UNT.", en:"Faculty of Architecture and Urbanism, UNT." } },
+          { d:{ es:"02/06", en:"2 June" }, t:{ es:"Diseño Nuestro.", en:"Diseño Nuestro." }, x:{ es:"2.ª Feria de Diseño de Interior y Equipamiento.", en:"2nd Interior and Furniture Design Fair." } },
+          { d:{ es:"31/05", en:"31 May" }, t:{ es:"Taller Relámpago.", en:"Taller Relámpago (Flash Workshop)." }, x:{ es:"Facultad de Arquitectura y Urbanismo, UNT.", en:"Faculty of Architecture and Urbanism, UNT." } },
+          { d:{ es:"27/05", en:"27 May" }, t:{ es:"Primera acción.", en:"First action." }, x:{ es:"Primer dispositivo inflable realizado con plástico y aire. Plaza San Martín, San Miguel de Tucumán.", en:"First inflatable device made of plastic and air. Plaza San Martín, San Miguel de Tucumán." } } ] },
+      ]},
+    ] },
+
+  { slug:"somospost", title:"Somos Post", periodLabel:{ es:"2018-presente", en:"2018-present" },
+    role:{ es:"Fundador y director creativo", en:"Founder and creative director" },
+    intro:{
+      es:["Estudio de diseño con base en San Miguel de Tucumán. Desarrolla proyectos de diseño de interiores, equipamiento e identidad para espacios comerciales, donde el color, la textura y el material funcionan como herramientas para construir el vínculo entre un espacio y quienes lo habitan. El estudio integra la formación en diseño y artes visuales con una atención particular al patrimonio cultural y arquitectónico local."],
+      en:["A design studio based in San Miguel de Tucumán. It develops interior design, furniture and identity projects for commercial spaces, where color, texture and material become tools for building the relationship between a space and the people who inhabit it. The studio brings together training in design and the visual arts, with particular attention to local cultural and architectural heritage."] },
+    note:null, highlights:[],
+    blocks:[
+      { title:{ es:"Áreas de trabajo", en:"Areas of work" }, paragraphs:{
+        es:["Diseño de interiores · Equipamiento y mobiliario · Identidad visual · Visualización arquitectónica"],
+        en:["Interior design · Furniture and fixtures · Visual identity · Architectural visualization"] } },
+      { title:{ es:"Links", en:"Links" }, links:[
+        { href:"https://www.instagram.com/somospost/", label:"@somospost" },
+        { href:"https://www.behance.net/stipinp/projects", label:"Behance" } ] },
+    ] },
+
+  { slug:"ameba", title:"AMEBA", periodLabel:{ es:"2012-2014", en:"2012-2014" },
+    role:{ es:"Gestor", en:"Organizer" },
+    intro:{
+      es:["Colectivo de estudiantes de la Escuela de Bellas Artes “M° Atilio Terragni” (UNT) dedicado a la gestión y organización de muestras colectivas e intervenciones en el espacio público de San Miguel de Tucumán. El proyecto se propuso sacar la producción estudiantil del ámbito académico y llevarla a la calle, en diálogo con artistas de la escena local."],
+      en:["A collective of students from the Escuela de Bellas Artes “M° Atilio Terragni” (UNT) dedicated to organizing group exhibitions and interventions in the public space of San Miguel de Tucumán. The project set out to take student work beyond the academic setting and into the street, in dialogue with artists from the local scene."] },
+    note:null, highlights:[],
+    blocks:[
+      { title:{ es:"Cronología", en:"Chronology" }, years:[
+        { y:"2014", items:[
+          { d:{ es:"29/11", en:"29 November" }, t:{ es:"Hago, siento, miro.", en:"Hago, siento, miro (I Make, I Feel, I Look)." }, x:{ es:"Exposición de artes plásticas y visuales al aire libre, con 26 artistas estudiantes de la Escuela de Bellas Artes y de la Facultad de Artes, UNT. Plaza de los Congresales (actual Plaza Temática), Congreso 199, San Miguel de Tucumán.", en:"Open-air exhibition of visual arts by 26 student artists from the School of Fine Arts and the Faculty of Arts, UNT. Plaza de los Congresales (now Plaza Temática), Congreso 199, San Miguel de Tucumán." } } ] },
+        { y:"2013", items:[
+          { d:{ es:"20/01", en:"20 January" }, t:{ es:"Muestra AMEBA.", en:"AMEBA Exhibition." }, x:{ es:"Exposición de dibujos, pinturas, esculturas y cerámicas de alumnos y egresados de la Escuela de Bellas Artes, UNT. Artista invitado: Rubén Kempa. Cierre musical en vivo a cargo de Astros, con Mauro Carabajal y Nicolás López. Plaza de los Congresales (actual Plaza Temática), Congreso 199, San Miguel de Tucumán.", en:"Exhibition of drawings, paintings, sculptures and ceramics by students and graduates of the School of Fine Arts, UNT. Guest artist: Rubén Kempa. Closing live music by Astros, with Mauro Carabajal and Nicolás López. Plaza de los Congresales (now Plaza Temática), Congreso 199, San Miguel de Tucumán." } } ] },
+        { y:"2012", items:[
+          { d:{ es:"03/03", en:"3 March" }, t:{ es:"Pintada y exposición.", en:"Painting and exhibition." }, x:{ es:"Intervención de pinturas y muestra con alumnos de la Escuela de Bellas Artes, UNT, junto a los artistas Rubén Kempa y Pajarito Pinto. Plaza Independencia, San Miguel de Tucumán.", en:"Painting intervention and exhibition with students of the School of Fine Arts, UNT, alongside artists Rubén Kempa and Pajarito Pinto. Plaza Independencia, San Miguel de Tucumán." } } ] },
+      ]},
+    ] },
+];
+
+/* --------------------------------------------------------------------------
+   INVESTIGACIÓN. Imágenes: assets/img/investigacion/<slug>/<archivo>
+   -------------------------------------------------------------------------- */
+const RESEARCH = {
+  kicker:{ es:"2014-presente", en:"2014-present" },
+  title:{ es:"Investigador independiente · Suri Dimension", en:"Independent researcher · Suri Dimension" },
+  intro:{
+    es:["Desde 2014, Pablo Rivero desarrolla una investigación independiente sobre la iconografía y la arqueología del Noroeste Argentino, centrada en las culturas que habitaron la región: Santamariana, Aguada, Candelaria, Tafí y San Francisco, entre otras. Más que el estudio de una cultura o un sitio aislado, el trabajo aborda un territorio y un conjunto de culturas entrelazadas, atendiendo a los procesos de desplazamiento, mezcla y transformación que las configuran.",
+        "Suri Dimension es el marco donde esa investigación toma forma. Funciona como un ejercicio de construcción de mundo (world building): un universo propio, con personajes, paisajes, objetos y reglas, que se expande en distintos formatos. Allí conviven obras de arte digital, piezas cerámicas, videojuegos propios y videojuegos desarrollados en colaboración con instituciones, como el Instituto de Arqueología y Museo de la Universidad Nacional de Tucumán (IAM).",
+        "El proceso parte del archivo: calcos, relevamientos de campo, piezas de colección y tesis doctorales y publicaciones de arqueólogas y arqueólogos de la región. Sobre esa base, cada imagen pasa por el boceto, la síntesis en pixel art y, cuando el proyecto lo requiere, la validación junto a especialistas. El pixel opera como unidad mínima de registro: un modo de observar, sintetizar y volver a poner en circulación las formas del pasado en el presente."],
+    en:["Since 2014, Pablo Rivero has carried out independent research into the iconography and archaeology of Northwest Argentina, focusing on the cultures that inhabited the region: Santamariana, Aguada, Candelaria, Tafí and San Francisco, among others. Rather than studying a single culture or site in isolation, the work approaches a territory and a set of interwoven cultures, paying attention to the processes of displacement, mixture and transformation that shape them.",
+        "Suri Dimension is the framework in which this research takes shape. It works as an exercise in world building: a universe of its own, with characters, landscapes, objects and rules, that expands across different formats. Digital artworks, ceramic pieces, original video games and video games developed in collaboration with institutions, such as the Instituto de Arqueología y Museo of the Universidad Nacional de Tucumán (IAM), all coexist within it.",
+        "The process begins with the archive: tracings, field surveys, collection pieces, and doctoral theses and publications by archaeologists from the region. From there, each image moves through sketching, pixel art synthesis and, when the project calls for it, validation with specialists. The pixel works as a minimal unit of record: a way of observing, synthesizing and bringing the forms of the past back into circulation in the present."] },
+  entries:[
+    { slug:"iam", year:"2026",
+      title:{ es:"Colaboración con el Instituto de Arqueología y Museo (IAM), UNT", en:"Collaboration with the Instituto de Arqueología y Museo (IAM), UNT" },
+      body:{ es:["Desarrollo de dos videojuegos educativos para las salas del museo, Las Resistencias Calchaquíes y La Piedra Sagrada - Cuentas de Puesto Viejo, y de figuras en pixel art reconstruidas a partir de calcos arqueológicos de urnas santamarianas e incas."],
+             en:["Development of two educational video games for the museum's galleries, Las Resistencias Calchaquíes (The Calchaquí Resistances) and La Piedra Sagrada - Cuentas de Puesto Viejo (The Sacred Stone - Beads of Puesto Viejo), and of pixel art figures reconstructed from archaeological tracings of Santamariana and Inca urns."] },
+      see:{ to:"obra/suridimension/resistencias-calchaquies-en-el-sumaq-kawsay",
+            label:{ es:"Ver también: Resistencias Calchaquíes en el Sumaq Kawsay", en:"See also: Resistencias Calchaquíes en el Sumaq Kawsay" } },
+      images:[ { file:"01.jpg", ratio:"9/16", cap:{ es:"Las Resistencias Calchaquíes", en:"Las Resistencias Calchaquíes" } },
+               { file:"02.jpg", ratio:"9/16", cap:{ es:"La Piedra Sagrada - Cuentas de Puesto Viejo", en:"La Piedra Sagrada - Cuentas de Puesto Viejo" } } ] },
+    { slug:"nox", year:"2024",
+      title:{ es:"El pixel art como método de síntesis digital para el desarrollo de identidad cultural y patrimonial en videojuegos",
+              en:"Pixel Art as a Method of Digital Synthesis for the Development of Cultural and Heritage Identity in Video Games" },
+      body:{ es:["Investigación presentada junto a la demo Stroll through the (…): viajes, mapas, bocetos, elementos arqueológicos y píxeles derivados de tallas en piedra y pinturas rupestres. Presentada en Nox Gallery, Tokio, Japón."],
+             en:["Research presented alongside the demo Stroll through the (…): travels, maps, sketches, archaeological elements and pixels derived from stone carvings and rock paintings. Presented at Nox Gallery, Tokyo, Japan."] },
+      see:{ to:"obra/suridimension/stroll-through-the", label:{ es:"Ver también: Stroll through the (…)", en:"See also: Stroll through the (…)" } },
+      images:[ { file:"01.jpg", ratio:"4/3", cap:null } ] },
+  ],
+};
+
+/* --------------------------------------------------------------------------
+   INFO. Retrato: assets/img/info/retrato.jpg
+   -------------------------------------------------------------------------- */
+const INFO = {
+  bio:{
+    es:["Es artista visual y curador. Trabaja desde el noroeste argentino desplazando imágenes del archivo arqueológico hacia el pixel, el algoritmo y la cerámica. Diseñador de Interiores y Equipamiento por la UNT, cursa el Programa de Actualización en Tecnologías en el Arte Contemporáneo (FFyL, UBA) y la Especialización en Historia del Arte en Tucumán (UNT).",
+        "Se mueve entre el videojuego, los sistemas generativos, GIF art, escultura y arquitectura inflable, y se apoya en una investigación sostenida sobre la iconografía arqueológica de la región. Es fundador y director de Maskay, galería de arte digital.",
+        "Expuso en Tokyo Node Labs/NEORT, Miyashita Park y Nox Gallery (Tokio), Kulturmuseum Bern, la Biennale ARTour (Bélgica), Cádiz, Montreal y Miami. Como curador realizó, entre otras, Sobre Periferia en el Museo Casa de la Ciudad y ¿Qué está sucediendo en internet? en ARTUC 2026. Recibió el Premio Innovación del Premio Ledesma de Artes Visuales 2025 por el videojuego Ritual de arcilla para llorar y su obra integra la antología TzAR: Pixel Art Anthology."],
+    en:["He is a visual artist and curator. Working from northwest Argentina, he displaces images from the archaeological archive into the pixel, the algorithm and clay. He holds a degree in Interior and Furniture Design from the Universidad Nacional de Tucumán, and is currently enrolled in the Technologies in Contemporary Art program (FFyL, UBA) and the Specialisation in Art History in Tucumán (UNT).",
+        "He moves between video games, generative systems, GIF art, sculpture and inflatable architecture, grounded in sustained research into the archaeological iconography of the region. He is the founder and director of Maskay, a digital art gallery.",
+        "He has exhibited at Tokyo Node Labs/NEORT, Miyashita Park and Nox Gallery (Tokyo), Kulturmuseum Bern, the ARTour Biennale (Belgium), Cádiz, Montreal and Miami. His curatorial projects include Sobre Periferia at Museo Casa de la Ciudad and ¿Qué está sucediendo en internet? at ARTUC 2026. He received the Innovation Award at the 2025 Premio Ledesma de Artes Visuales for the video game Ritual de arcilla para llorar, and his work is included in the anthology TzAR: Pixel Art Anthology."] },
+  cv:[
+    { title:{ es:"Exposiciones seleccionadas", en:"Selected exhibitions" }, items:[
+      { y:"2026", t:{ es:"79.º Salón Nacional de Rosario, MACRO (selección)", en:"79th Salón Nacional de Rosario, MACRO (selected)" } },
+      { y:"2026", t:{ es:"53.º Salón Nacional de Tucumán (selección)", en:"53rd Salón Nacional de Tucumán (selected)" } },
+      { y:"2026", t:{ es:"Urban Digital Canvas, Festival Internacional de Luz de Shanghái", en:"Urban Digital Canvas, Shanghai International Light Festival" } },
+      { y:"2026", t:{ es:"RGB Montreal, 5.ª edición", en:"RGB Montreal, 5th edition" } },
+      { y:"2025", t:{ es:"DIGITAL SPRINGBOARD Vol.4, Tokyo Node Labs / NEORT, Tokio", en:"DIGITAL SPRINGBOARD Vol.4, Tokyo Node Labs / NEORT, Tokyo" } },
+      { y:"2025", t:{ es:"BYOD2, Miyashita Park, Tokio", en:"BYOD2, Miyashita Park, Tokyo" } },
+      { y:"2024", t:{ es:"Hommage à Paul Klee, Kulturmuseum Bern", en:"Hommage à Paul Klee, Kulturmuseum Bern" } },
+      { y:"2023", t:{ es:"Digital Dreams, Biennale ARTour, Bélgica", en:"Digital Dreams, ARTour Biennale, Belgium" } },
+    ]},
+    { title:{ es:"Curaduría", en:"Curatorship" }, items:[
+      { y:"2026", t:{ es:"¿Qué está sucediendo en internet?, ARTUC", en:"¿Qué está sucediendo en internet?, ARTUC" } },
+      { y:"2025", t:{ es:"Sobre Periferia, Casa Museo de la Ciudad", en:"Sobre Periferia, Casa Museo de la Ciudad" } },
+      
+      { y:"2024", t:{ es:"Señalética y simbología, Nox Gallery, Tokio", en:"Señalética y simbología, Nox Gallery, Tokyo" } },
+    ]},
+    { title:{ es:"Premios y publicaciones", en:"Awards and publications" }, items:[
+      { y:"2025", t:{ es:"Premio Innovación, Premio Ledesma de Artes Visuales", en:"Innovation Award, Premio Ledesma de Artes Visuales" } },
+      { y:"2025",    t:{ es:"TzAR: Pixel Art Anthology", en:"TzAR: Pixel Art Anthology" } },
+    ]},
+    { title:{ es:"Formación", en:"Education" }, items:[
+      { y:{ es:"en curso", en:"ongoing" }, t:{ es:"Programa de Actualización en Tecnologías en el Arte Contemporáneo, FFyL, UBA", en:"Technologies in Contemporary Art program, FFyL, UBA" } },
+      { y:{ es:"en curso", en:"ongoing" }, t:{ es:"Especialización en Historia del Arte en Tucumán, UNT", en:"Specialisation in Art History in Tucumán, UNT" } },
+      { y:"2018", t:{ es:"Diseño de Interiores y Equipamiento, UNT", en:"Interior and Furniture Design, UNT" } },
+    ]},
+  ],
+};
+
+/* Textos de la interfaz */
+const UI = {
+  works:      { es:"Obra", en:"Works" },
+  back:       { es:"Volver", en:"Back" },
+  readText:   { es:"Leer texto", en:"Read text" },
+  more:       { es:"Ver más", en:"See more" },
+  others:     { es:"Otras curadurías", en:"Other curatorial projects" },
+  curatorial: { es:"Texto", en:"Text" },
+  highlights: { es:"Destacados", en:"Highlights" },
+  research:   { es:"Investigaciones", en:"Research" },
+  showAll:    { es:"Ver las {n} acciones de {y}", en:"See all {n} actions from {y}" },
+  showLess:   { es:"Ver menos", en:"Show less" },
+  cvDownload: { es:"Descargar CV completo (PDF)", en:"Download full CV (PDF)" },
+  portrait:   { es:"Retrato", en:"Portrait" },
+  contact:    { es:"Contacto", en:"Contact" },
+  location:   { es:"San Miguel de Tucumán, Argentina", en:"San Miguel de Tucumán, Argentina" },
+  e404:       { es:"Esta página no existe o cambió de lugar. Yukk tampoco la encuentra.", en:"This page doesn't exist or has moved. Yukk can't find it either." },
+  goHome:     { es:"Volver al inicio", en:"Back to home" },
+  sections:   { es:"Secciones", en:"Sections" },
+  lines:      { es:"Líneas de obra", en:"Lines of work" },
+  meta:       { es:"Pablo Rivero (Stipinpixel). Artista visual, curador e investigador. Tucumán, Argentina.",
+                en:"Pablo Rivero (Stipinpixel). Visual artist, curator and researcher. Tucumán, Argentina." },
+};
+
+/* ==========================================================================
+   2. ICONOS. PNG de 25×25 en assets/img/icons/
+   ========================================================================== */
+const ICONS = {
+  instagram: "assets/img/icons/instagram.png",
+  linkedin:  "assets/img/icons/linkedin.png",
+  x:         "assets/img/icons/x.png",
+  itchio:    "assets/img/icons/itch.png",
+};
+
+/* ==========================================================================
+   3. ESTADO Y RUTEO (por hash: funciona en un dominio, en una subcarpeta
+      de GitHub Pages y abriendo el archivo con doble clic)
+   ========================================================================== */
+const app = document.getElementById("app");
+let lang = "es";
+try { lang = localStorage.getItem("lang") || ((navigator.language || "es").startsWith("en") ? "en" : "es"); } catch(e){}
+const open = {};   /* listas desplegadas: { "hinchao-2019": true } */
+
+const t   = v => (v && typeof v === "object" && !Array.isArray(v)) ? (v[lang] ?? v.es) : v;
+const esc = s => String(s ?? "").replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const href = r => "/" + r;
+const path = () => location.pathname.replace(/^\/+|\/+$/g, "");
+
+window.addEventListener("popstate", () => { render(); });
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-lang]");
+  if (b){ lang = lang === "es" ? "en" : "es"; try{ localStorage.setItem("lang", lang); }catch(_){} render(true); return; }
+  const tg = e.target.closest("[data-toggle]");
+    if (tg){ const k = tg.dataset.toggle; open[k] = !open[k]; render(true); return; }
+  const a = e.target.closest('a[href^="/"]');
+  if (a && !a.target && !a.hasAttribute("download") && !e.metaKey && !e.ctrlKey && !e.shiftKey){
+    e.preventDefault(); history.pushState({}, "", a.getAttribute("href")); render();
+  }
+});
+
+/* ==========================================================================
+   4. PIEZAS
+   ========================================================================== */
+function media(src, alt, ratio, free){
+  return `<div class="m${free ? " m--free" : ""}" style="aspect-ratio:${ratio}">
+    <img src="${esc(src)}" alt="${esc(alt)}" loading="lazy"
+      onload="this.parentNode.classList.add('ok')" onerror="this.remove()"></div>`;
+}
+function fig(src, alt, ratio, cap, free){
+  return `<figure style="margin:0">${media(src, alt, ratio, free)}${cap ? `<figcaption class="cap"><span>${cap}</span></figcaption>` : ""}</figure>`;
+}
+function paras(arr, cls){
+  const a = t(arr) || [];
+  return a.length ? `<div class="${cls || "prose"}">${a.map(p => `<p>${esc(p)}</p>`).join("")}</div>` : "";
+}
+
+function squares(){
+  const social = SITE.social.map(s =>
+    `<a href="${s.href}" target="_blank" rel="me noopener" aria-label="${s.label}"><img src="${ICONS[s.id]}" alt="" width="25" height="25"></a>`).join("");
+  const shown = SITE.langShowsCurrent ? lang : (lang === "es" ? "en" : "es");
+  const label = lang === "es" ? "Switch to English" : "Cambiar a español";
+  return `<div class="squares">${social}<button type="button" data-lang aria-label="${label}" title="${label}">${shown}</button></div>`;
+}
+function header(active){
+  const items = NAV.map(n => {
+    const cur = n.id === active ? ' aria-current="page"' : "";
+    return `<a href="${href(n.route)}" style="--item:${n.color}"${cur}><span>${esc(t(n.label))}</span></a>`;
+  }).join("");
+  return `<header class="masthead">
+    <a class="brand" href="/">
+      <img class="brand__mark" src="${SITE.mark}" alt="Pablo Rivero - Stipinpixel" width="100" height="100">
+      <span class="brand__name"><span>pablo rivero</span><span>stipinpixel</span></span>
+    </a>
+    <nav class="nav" aria-label="${esc(t(UI.sections))}">${items}</nav>
+    ${squares()}
+  </header>`;
+}
+function footer(){
+  return `<footer class="colophon">${squares()}<p class="colophon__legal">${esc(SITE.legal)}</p></footer>`;
+}
+function lineBar(current, backTo, backLabel){
+  const chips = LINES.map(l => `<a class="chip" href="${href("obra/" + l.slug)}"${l.slug === current ? ' aria-current="page"' : ""}>${esc(t(l.title))}</a>`).join("");
+  return `<nav class="bar" aria-label="${esc(t(UI.lines))}"><a class="bar__back" href="${href(backTo)}">← ${esc(backLabel)}</a>${chips}</nav>`;
+}
+function projectBar(current){
+  const chips = PROJECTS.map(p => `<a class="chip" href="${href("proyectos/" + p.slug)}"${p.slug === current ? ' aria-current="page"' : ""}>${esc(p.title)}</a>`).join("");
+  return `<nav class="bar" aria-label="${esc(t(NAV[2].label))}"><a class="bar__back" href="${href("proyectos")}">← ${esc(t(NAV[2].label))}</a>${chips}</nav>`;
+}
+
+const workImg  = (w, f) => `assets/img/obra/${w.line}/${w.slug}/${f}`;
+const lineImg  = l => `assets/img/obra/${l.slug}/portada.jpg`;
+const curImg   = c => `assets/img/curaduria/${c.slug}/portada.jpg`;
+const projImg  = (p, f) => `assets/img/proyectos/${p.slug}/${f}`;
+const resImg   = (r, f) => `assets/img/investigacion/${r.slug}/${f}`;
+
+/* ==========================================================================
+   5. VISTAS
+   ========================================================================== */
+function viewHome(){
+  const bands = HOME.map(b => `
+    <div class="gap"></div>
+    <div class="band band--${b.layout}">
+      ${b.tiles.map(x => `<a class="tile tile--${x.size}" href="${href(x.to)}">
+          ${media(x.img, t(x.title), "auto")}
+          <span class="tile__label">${esc(t(x.title))}</span></a>`).join("")}
+    </div>`).join("");
+  return { section:"home", title:"Pablo Rivero - Stipinpixel", desc:t(UI.meta),
+    html:`<main class="wrap">${bands}<div class="gap"></div></main>` };
+}
+
+function viewWorksIndex(){
+  const tile = (l, ratio) => `<a class="line" href="${href("obra/" + l.slug)}">${media(lineImg(l), t(l.title), ratio)}<h2 class="line__t">${esc(t(l.title))}</h2></a>`;
+  return { section:"works", title:`${t(UI.works)} - Pablo Rivero`, desc:t(UI.meta),
+    html:`<main class="wrap">
+      <div class="lines" style="grid-template-columns:700fr 295fr">${tile(LINES[0], "700/394")}${tile(LINES[1], "295/394")}</div>
+      <div class="lines" style="grid-template-columns:1fr 1fr 1fr">${LINES.slice(2).map(l => tile(l, "4/3")).join("")}</div>
+    </main>` };
+}
+
+function viewLine(l){
+  const items = WORKS.filter(w => w.line === l.slug);
+  const cards = items.map(w => `<a class="card" href="${href(`obra/${l.slug}/${w.slug}`)}">
+      ${media(workImg(w, "portada.jpg"), t(w.title), "4/3")}
+      <div class="card__b"><span class="card__y">${esc(w.year)}</span><p class="card__t">${esc(t(w.title))}</p><p class="card__d">${esc(t(w.tech))}</p></div></a>`).join("");
+  const intro = l.intro ? `<div class="prose"><p>${esc(t(l.intro))}</p>${l.see ? `<p style="margin-top:20px"><a class="link" href="${href(l.see.to)}">${esc(t(l.see.label))}</a></p>` : ""}</div>` : "<div></div>";
+  return { section:"works", title:`${t(l.title)} - Pablo Rivero`, desc:t(l.intro) || t(UI.meta),
+    html:`<main class="wrap">
+      ${lineBar(l.slug, "obra", t(UI.works))}
+      <div class="lead"><h1 class="h1">${esc(t(l.title))}</h1>${intro}</div>
+      <div class="cards">${cards}</div>
+    </main>` };
+}
+
+function factsHTML(facts, links){
+  const rows = (facts || []).map(f => {
+    const v = f.list ? `<ul>${f.list.map(x => `<li>${esc(t(x))}</li>`).join("")}</ul>` : esc(t(f.v));
+    return `<dt>${esc(t(f.k))}</dt><dd>${v}</dd>`;
+  });
+  if (links && links.length) rows.push(`<dt>Links</dt><dd>${links.map(k => `<a class="link" href="${k.href}" target="_blank" rel="noopener">${esc(k.label)}</a>`).join("<br>")}</dd>`);
+  return rows.join("");
+}
+
+function viewWork(l, w){
+  const body = (t(w.body) || []).map(p => `<p>${esc(p)}</p>`).join("")
+    + (w.bullets ? `<ul class="bul">${w.bullets.map(b => `<li>${esc(b)}</li>`).join("")}</ul>` : "");
+  const gal = (w.gallery || []).map(g => fig(workImg(w, g.file), t(w.title), g.ratio || "4/3", g.cap ? esc(t(g.cap)) : "")).join("");
+  return { section:"works", title:`${t(w.title)} - Pablo Rivero`, desc:(t(w.body) || [])[0] || t(w.tech),
+    html:`<main class="wrap">
+      ${lineBar(l.slug, "obra/" + l.slug, t(UI.back))}
+      <div class="ftitle"><h1 class="h1 h1--xl">${esc(t(w.title))}</h1><span class="ftitle__y">${esc(w.year)}</span></div>
+      ${fig(workImg(w, "portada.jpg"), t(w.title), "16/9", w.coverCap ? esc(t(w.coverCap)) : "", true)}
+      <div class="fhead">
+        <div class="prose">${body || `<p>${esc(t(w.tech))}</p>`}</div>
+        <dl class="sheet"><dt>${lang === "es" ? "Año" : "Year"}</dt><dd>${esc(w.year)}</dd><dt>${lang === "es" ? "Técnica" : "Medium"}</dt><dd>${esc(t(w.tech))}</dd>${factsHTML(w.facts, w.links)}</dl>
+      </div>
+      ${gal ? `<div class="gal">${gal}</div>` : ""}
+    </main>` };
+}
+
+function viewCuratorial(){
+  const C = CURATORIAL.items;
+  const shows = C.filter(c => c.featured).map(c => `
+    <article class="show">
+      ${fig(curImg(c), t(c.title), "700/394", c.coverCap ? esc(t(c.coverCap)) : "")}
+      <div class="show__side">
+        <p class="kick">${esc(t(c.date))} · ${esc(t(c.place))}</p>
+        <h2 class="show__t"><a href="${href("curaduria/" + c.slug)}">${esc(t(c.title))}</a></h2>
+        <p class="show__r">${esc(t(c.role))}</p>
+        ${c.quote ? `<p class="quote">“${esc(t(c.quote))}”</p>` : (c.desc ? `<p class="show__r">${esc(t(c.desc))}</p>` : "")}
+        <a class="btn" href="${href("curaduria/" + c.slug)}">${esc(t(c.text ? UI.readText : UI.more))} →</a>
+      </div>
+    </article>`).join("");
+  const rest = C.filter(c => !c.featured).map(c =>
+    `<li><b>${esc(c.year)}</b><a class="t" href="${href("curaduria/" + c.slug)}">${esc(t(c.title))}</a><span class="v">${esc(t(c.place))}</span></li>`).join("");
+  return { section:"curatorial", title:`${t(NAV[1].label)} - Pablo Rivero`, desc:t(CURATORIAL.intro),
+    html:`<main class="wrap">
+      <div class="lead"><h1 class="h1">${esc(t(NAV[1].label))}</h1><div class="prose"><p>${esc(t(CURATORIAL.intro))}</p></div></div>
+      ${shows}
+      <div class="block"><h2 class="h2">${esc(t(UI.others))}</h2><ul class="rows">${rest}</ul></div>
+      <div class="gap2"></div>
+    </main>` };
+}
+
+function viewCuratorialItem(c){
+  const text = c.text ? `<div class="block"><h2 class="h2">${esc(t(UI.curatorial))}</h2>${paras(c.text, c.poem ? "text text--poem" : "text")}</div>` : "";
+  return { section:"curatorial", title:`${t(c.title)} - Pablo Rivero`, desc:t(c.desc) || t(c.place),
+    html:`<main class="wrap">
+      <nav class="bar"><a class="bar__back" href="${href("curaduria")}">← ${esc(t(NAV[1].label))}</a></nav>
+      <div class="ftitle"><h1 class="h1 h1--xl">${esc(t(c.title))}</h1><span class="ftitle__y">${esc(c.year)}</span></div>
+      ${fig(curImg(c), t(c.title), "16/9", c.coverCap ? esc(t(c.coverCap)) : "", true)}
+      <div class="fhead">
+        <div class="prose">${c.desc ? `<p>${esc(t(c.desc))}</p>` : ""}</div>
+        <dl class="sheet">
+          <dt>${lang === "es" ? "Fecha" : "Date"}</dt><dd>${esc(t(c.date))}</dd>
+          <dt>${lang === "es" ? "Lugar" : "Venue"}</dt><dd>${esc(t(c.place))}</dd>
+          <dt>${lang === "es" ? "Rol" : "Role"}</dt><dd>${esc(t(c.role))}</dd>
+        </dl>
+      </div>
+      ${text}
+      <div class="gap2"></div>
+    </main>` };
+}
+
+function viewProjects(){
+  const cards = PROJECTS.map(p => `<a class="prj" href="${href("proyectos/" + p.slug)}">
+      ${media(projImg(p, "portada.jpg"), p.title, "4/3")}
+      <h2 class="prj__t">${esc(p.title)}</h2>
+      <p class="kick" style="font-size:14px">${esc(t(p.periodLabel))} · ${esc(t(p.role))}</p></a>`).join("");
+  return { section:"projects", title:`${t(NAV[2].label)} - Pablo Rivero`, desc:t(UI.meta),
+    html:`<main class="wrap"><div class="prjs">${cards}</div></main>` };
+}
+
+function eventLi(e){
+  return `<li><span class="d">${esc(t(e.d))}</span><span><b>${esc(t(e.t))}</b>${e.x ? " " + esc(t(e.x)) : ""}${e.to ? ` <a class="link" href="${href(e.to)}">→</a>` : ""}</span></li>`;
+}
+function blockHTML(p, b, i){
+  let inner = "";
+  if (b.years){
+    inner = b.years.map(y => {
+      const key = `${p.slug}-${y.y}`;
+      const fold = b.fold && y.items.length > b.fold;
+      const shown = fold && !open[key] ? y.items.slice(0, 6) : y.items;
+      const btn = fold ? `<button type="button" class="toggle" data-toggle="${key}" aria-expanded="${open[key] ? "true" : "false"}">${
+        open[key] ? esc(t(UI.showLess)) : esc(t(UI.showAll).replace("{n}", y.items.length).replace("{y}", y.y))}</button>` : "";
+      return `<section class="yr"><h3 class="yr__y">${esc(y.y)}</h3><div><ul class="ev">${shown.map(eventLi).join("")}</ul>${btn}</div></section>`;
+    }).join("");
+  } else if (b.items){
+    inner = `<ul class="ev">${b.items.map(e => eventLi({ d:e.d, t:e.t, x:e.x, to:e.to })).join("")}</ul>`;
+  } else if (b.paragraphs){
+    inner = paras(b.paragraphs);
+  } else if (b.links){
+    inner = `<p>${b.links.map(k => `<a class="link" href="${k.href}" target="_blank" rel="noopener">${esc(k.label)}</a>`).join(" &nbsp;·&nbsp; ")}</p>`;
+  }
+  return `<section class="block"><h2 class="h2">${esc(t(b.title))}</h2>${inner}</section>`;
+}
+function viewProject(p){
+  const hl = (p.highlights || []).map(h =>
+    fig(projImg(p, h.file), t(h.t), "4/3", `<b>${esc(t(h.t))}</b>, ${esc(t(h.cap))}`)).join("");
+  return { section:"projects", title:`${p.title} - Pablo Rivero`, desc:(t(p.intro) || [])[0],
+    html:`<main class="wrap">
+      ${projectBar(p.slug)}
+      <div class="phero">
+        <div><h1 class="phero__t">${esc(p.title)}</h1><p class="kick">${esc(t(p.periodLabel))} · ${esc(t(p.role))}</p></div>
+        <div class="prose">${(t(p.intro) || []).map(x => `<p>${esc(x)}</p>`).join("")}
+          ${p.note ? `<p class="note">${esc(t(p.note))}</p>` : ""}
+          ${p.see ? `<p><a class="link" href="${href(p.see.to)}">${esc(t(p.see.label))}</a></p>` : ""}</div>
+      </div>
+      ${hl ? `<section class="block" style="padding-top:0"><h2 class="h2">${esc(t(UI.highlights))}</h2><div class="hl" style="padding-top:0">${hl}</div></section>` : ""}
+      ${(p.blocks || []).map((b, i) => blockHTML(p, b, i)).join("")}
+      <div class="gap2"></div>
+    </main>` };
+}
+
+function viewResearch(){
+  const entries = RESEARCH.entries.map(r => {
+    const imgs = (r.images || []).map(im => fig(resImg(r, im.file), t(r.title), im.ratio || "4/3", im.cap ? esc(t(im.cap)) : ""));
+    return `<article class="entry">
+      <div><p class="kick">${esc(r.year)}</p><h3 class="entry__t">${esc(t(r.title))}</h3>
+        ${paras(r.body)}${r.see ? `<p style="margin-top:14px"><a class="link" href="${href(r.see.to)}">${esc(t(r.see.label))} →</a></p>` : ""}</div>
+      <div${imgs.length > 1 ? ' class="duo"' : ""}>${imgs.join("")}</div>
+    </article>`;
+  }).join("");
+  return { section:"research", title:`${t(NAV[3].label)} - Pablo Rivero`, desc:(t(RESEARCH.intro) || [])[0],
+    html:`<main class="wrap">
+      <div class="rtop"><div><p class="kick">${esc(t(RESEARCH.kicker))}</p><h1 class="h1" style="margin-top:12px">${esc(t(RESEARCH.title))}</h1></div>${paras(RESEARCH.intro)}</div>
+      <section class="block" style="padding-top:0"><h2 class="h2">${esc(t(UI.research))}</h2>${entries}</section>
+    </main>` };
+}
+
+function viewInfo(active){
+  const cv = INFO.cv.map(g => `<section><h2 class="h2">${esc(t(g.title))}</h2><ul class="cvl">${
+    g.items.map(i => `<li><b>${esc(t(i.y))}</b><span>${esc(t(i.t))}</span></li>`).join("")}</ul></section>`).join("");
+  return { section:active, title:`${t(active === "contact" ? NAV[5].label : NAV[4].label)} - Pablo Rivero`, desc:(t(INFO.bio) || [])[0],
+    html:`<main class="wrap">
+      <div class="bio">
+        <div><h1 class="h1">Pablo Rivero</h1>${paras(INFO.bio)}
+          <p style="margin-top:var(--u)"><a class="btn" href="${t(SITE.cv)}" download>${esc(t(UI.cvDownload))} ↓</a></p></div>
+        ${fig("assets/img/info/retrato.jpg", "Pablo Rivero", "3/4", "")}
+      </div>
+      <div class="cv">${cv}</div>
+      <section class="contact" id="contacto">
+        <h2 class="h1">${esc(t(UI.contact))}</h2>
+        <div style="display:flex;flex-direction:column"><a class="mail" href="mailto:${SITE.email}">${SITE.email}</a><p>${esc(t(UI.location))}</p></div>
+      </section>
+    </main>` };
+}
+
+function viewContact(){
+  const social = SITE.social.map(s =>
+    `<li><a class="link" href="${s.href}" target="_blank" rel="me noopener">${esc(s.label)}</a></li>`).join("");
+  return { section:"contact", title:`${t(NAV[5].label)} - Pablo Rivero`, desc:SITE.email,
+    html:`<main class="wrap">
+      <section class="contact" style="padding-top:var(--u)">
+        <h1 class="h1">${esc(t(UI.contact))}</h1>
+        <div style="display:flex;flex-direction:column;gap:37.5px">
+          <div style="display:flex;flex-direction:column">
+            <a class="mail" href="mailto:${SITE.email}">${SITE.email}</a>
+            <p>${esc(t(UI.location))}</p>
+          
+      </section>
+      <div class="gap2"></div>
+    </main>` };
+}
+
+function view404(){
+  return { section:"home", title:"404 - Pablo Rivero", desc:"",
+    html:`<main class="wrap"><div class="err">
+      <img class="err__yukk" src="assets/img/yukk.gif" alt="Yukk" width="240" height="360">
+      <p class="err__n">404</p><span class="err__tag">error</span>
+      <p class="err__msg">${esc(t(UI.e404))}</p>
+      <a class="btn" href="/">${esc(t(UI.goHome))}</a>
+    </div></main>` };
+}
+
+function resolve(){
+  const p = path().split("/").filter(Boolean);
+  if (!p.length) return viewHome();
+  const [a, b, c] = p;
+  if (a === "obra"){
+    if (!b) return viewWorksIndex();
+    const l = LINES.find(x => x.slug === b); if (!l) return view404();
+    if (!c) return viewLine(l);
+    const w = WORKS.find(x => x.line === b && x.slug === c);
+    return w ? viewWork(l, w) : view404();
+  }
+  if (a === "curaduria"){
+    if (!b) return viewCuratorial();
+    const it = CURATORIAL.items.find(x => x.slug === b);
+    return it ? viewCuratorialItem(it) : view404();
+  }
+  if (a === "proyectos"){
+    if (!b) return viewProjects();
+    const pr = PROJECTS.find(x => x.slug === b);
+    return pr ? viewProject(pr) : view404();
+  }
+  if (a === "investigacion" && !b) return viewResearch();
+  if (a === "info" && !b) return viewInfo("info");
+  if (a === "contacto" && !b) return viewContact();
+  return view404();
+}
+
+let last = null;
+function render(keepScroll){
+  const y = window.scrollY;
+  const v = resolve();
+  document.body.dataset.section = v.section;
+  document.documentElement.lang = lang;
+  document.title = v.title;
+  const m = document.querySelector('meta[name="description"]');
+  if (m) m.setAttribute("content", v.desc || t(UI.meta));
+  app.innerHTML = header(v.section) + v.html + footer();
+  const now = path();
+  if (keepScroll) window.scrollTo(0, y);
+  
+  else if (now !== last) window.scrollTo(0, 0);
+  last = now;
+}
+(function(){
+  const q = new URLSearchParams(location.search).get("p");
+  if (q) history.replaceState({}, "", q);
+  else if (location.hash.indexOf("#/") === 0) history.replaceState({}, "", location.hash.slice(1));
+})();
+render();
+</script>
+</body>
+</html>
